@@ -1,7 +1,6 @@
 <?php include "includes/header.php"; ?>
 
     <?php 
-        session_start();
 
         $product = $_SESSION['product'];
         $quantity =  $_SESSION['quantity'];
@@ -27,7 +26,7 @@
         if (mysqli_query($conn, $sql)){
             header("Location: includes/destroy-sessions.php ");    
         }else{
-            echo Error . mysqli_query($conn, $sql);
+            echo "Error " . mysqli_query($conn, $sql);
         }
     }
     ?>

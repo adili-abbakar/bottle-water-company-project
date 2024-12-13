@@ -35,19 +35,19 @@
 
 }
 
-.new-sele-form-body{
+.new-sale-form-body{
     padding: 40px 20px 50px 20px;
     width: 500px;
 }
 
-.new-sele-form-input-ctn{
+.new-sale-form-input-ctn{
     display: flex;
     flex-direction: column;
     gap: 3px;
     padding: 5px;
 }
 
-.new-sele-form-input-label{
+.new-sale-form-input-label{
     font-size: 95%;
 }
 
@@ -60,7 +60,7 @@
 }
 
 
-.new-sele-form-submit-ctn{
+.new-sale-form-submit-ctn{
     padding: 20px 10px 10px 10px;
     display: flex;
     justify-content: center;

@@ -1,0 +1,38 @@
+:root{
+
+    --theme-color-light: red;
+    --theme-color-dark: red;
+
+
+
+}
+
+
+nav{
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 200px;
+    background-color: var(--theme-color-light);
+    padding: 10px;
+
+}
+
+.nav-header{
+    font-size: large;
+    padding: 20px 0 20px 0;
+    font-weight: bold;
+}
+
+.nav-links-ctn{
+
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+
+.nav-link{
+    padding: 5px 10px;
+    background-color: white;
+}

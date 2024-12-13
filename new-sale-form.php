@@ -1,8 +1,6 @@
 <?php include "includes/header.php"; ?>
 
 <?php 
-    session_start();
-
 $product = $quantity = $customer_name = $customer_email  = $customer_contact_number =  $customer_address = '';
 $productErr = $quantityErr = $customer_nameErr = $customer_emailErr  = $customer_contact_numberErr = $customer_addressErr = '';
 
@@ -98,9 +96,9 @@ if (isset($_POST['submit'])){
                 </div>
 
             
-                <div class="new-sele-form-body">
-                    <div class="new-sele-form-input-ctn">
-                        <label class="new-sele-form-input-label" for="product">Product</label>
+                <div class="new-sale-form-body">
+                    <div class="new-sale-form-input-ctn">
+                        <label class="new-sale-form-input-label" for="product">Product</label>
 
 
                         <select type="text"     class="new-sale-form-input  <?php if(isset($_POST['submit'])){if ($product === '' ){ echo 'err-style'; };} ?>" name="product" placeholder="Enter product">
@@ -117,43 +115,43 @@ if (isset($_POST['submit'])){
 
                     </div>
 
-                    <div class="new-sele-form-input-ctn">
-                        <label class="new-sele-form-input-label" for="quantity">Quantity (Wrap pack)</label>
+                    <div class="new-sale-form-input-ctn">
+                        <label class="new-sale-form-input-label" for="quantity">Quantity (Wrap pack)</label>
                         <input type="number" class="new-sale-form-input <?php if(isset($_POST['submit'])){if ($quantity === '' ){ echo 'err-style'; };} ?> " name="quantity" placeholder="Enter quantity">
                         <span class="err-message"><?php if(isset($_POST['submit'])){if($quantity === ""){ echo   $quantityErr ; }}; ?></span>
                     
                     </div>
 
-                    <div class="new-sele-form-input-ctn">
-                        <label class="new-sele-form-input-label" for="customer_name">Customer Name</label>
+                    <div class="new-sale-form-input-ctn">
+                        <label class="new-sale-form-input-label" for="customer_name">Customer Name</label>
                         <input type="text" class="new-sale-form-input  <?php if(isset($_POST['submit'])){if ($customer_name === '' ){ echo 'err-style'; };} ?>" name="customer_name" placeholder="Enter Customer Name">
                         <span class="err-message"><?php if(isset($_POST['submit'])){if($customer_name === ""){ echo   $customer_nameErr ; }}; ?></span>
 
                     </div>
 
-                    <div class="new-sele-form-input-ctn">
-                        <label class="new-sele-form-input-label" for="customer_email">Customer Email</label>
+                    <div class="new-sale-form-input-ctn">
+                        <label class="new-sale-form-input-label" for="customer_email">Customer Email</label>
                         <input type="email" class="new-sale-form-input  <?php if(isset($_POST['submit'])){if ($customer_email=== '' ){ echo 'err-style'; };} ?>" name="customer_email" placeholder="Enter Customer Email">
                         <span class="err-message"><?php if(isset($_POST['submit'])){if($customer_email === ""){ echo   $customer_emailErr ; }}; ?></span>
 
                     </div>
 
-                    <div class="new-sele-form-input-ctn">
-                        <label class="new-sele-form-input-label" for="customer_contact_number">Customer Contact Number</label>
+                    <div class="new-sale-form-input-ctn">
+                        <label class="new-sale-form-input-label" for="customer_contact_number">Customer Contact Number</label>
                         <input type="number" class="new-sale-form-input  <?php if(isset($_POST['submit'])){if ($customer_contact_number === '' ){ echo 'err-style'; };} ?>" name="customer_contact_number" placeholder="Enter Customer Contact Number">
                         <span class="err-message"><?php if(isset($_POST['submit'])){if($customer_contact_number === ""){ echo   $customer_contact_numberErr  ; }}; ?></span>
 
                     </div>
 
                     
-                    <div class="new-sele-form-input-ctn">
-                        <label class="new-sele-form-input-label" for="customer_address">Customer Address</label>
+                    <div class="new-sale-form-input-ctn">
+                        <label class="new-sale-form-input-label" for="customer_address">Customer Address</label>
                         <input type="text" class="new-sale-form-input  <?php if(isset($_POST['submit'])){if ($customer_address === '' ){ echo 'err-style'; };} ?>" name="customer_address" placeholder="Enter Customer Addres">
                         <span class="err-message"><?php if(isset($_POST['submit'])){if($customer_address === ""){ echo   $customer_addressErr ; }}; ?></span>
 
                     </div>
 
-                    <div class="new-sele-form-submit-ctn">
+                    <div class="new-sale-form-submit-ctn">
                        <a href="">
                         <input type="submit" name="submit"  class="new-sale-form-submit btn" value="Next">
                        </a>

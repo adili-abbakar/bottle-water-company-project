@@ -1,5 +1,16 @@
 <?php include 'config/database.php' ; ?>
 
+
+<?php
+session_start();
+if(!isset($_SESSION['user'])){
+
+
+    header('Location: /bwc/login-form.php');
+
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -32,8 +43,22 @@
                 <a href="index.php">Home</a>
                 <a href="all-sales-record.php">Sales</a>
                 <a href="new-sale-form.php">New Sale</a>
+                <?php if(isset($_SESSION['user'])): ?>
+                    <a href="profile.php">Profile</a>
+
+                    <a href="includes/logout.php">Logout</a>
+                    <?php else: ?>
+                        <a href="login-form.php">Login</a>
+
+                <?php endif; ?>
+
+
+
+
+
 
             </div>
         </div>
     </header>
+
 

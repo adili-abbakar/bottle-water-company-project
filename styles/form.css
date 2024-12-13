@@ -9,7 +9,7 @@
 .form-main-ctn{
     display: flex;
     justify-content: center;
-    height: 100vh;
+    min-height: 100vh;
 }
 
 
@@ -66,16 +66,16 @@
 .form-input{
     padding:7px ;
     font-size: 75%;
-    max-width: 350px;
-    min-width: 250px;
+    max-width: 450px;
+    min-width: 350px;
     border: 1px lightgray solid;
     border-radius: 5px;
 }
 
 @media (max-width: 400px){
     .form-input{
-        max-width: 200px;
-        min-width: 150px;
+        max-width: 250px;
+        min-width: 200px;
         
     }
 
@@ -114,4 +114,39 @@
 
 .error-message{
     color: var(--error-color);
+    text-align: center;
+}
+
+
+.err-message{
+    font-size: 90%;
+    color: var(--error-color);
+}
+
+.err-style{
+    border-color: red;
+}
+
+@media (max-width: 500px) {
+    .form-main-ctn{
+        display: block;
+        margin: -75px 0  -55px  0;
+        width: 100vw;
+        height: 100%;
+
+        font-size: 120% !important;
+        border: none;
+    }
+
+    .form-ctn{
+        width: 100%;
+        height: inherit;
+    }
+
+    .form-body{
+        height: 100vh;
+    }
+
+
+
 }
