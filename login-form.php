@@ -1,6 +1,7 @@
-<?php include('config/database.php') ?>
+<?php include('config/database.php'); ?>
 
-<?php
+<?php 
+
 session_start();
 
 if (isset($_SESSION['username'])) {
@@ -41,11 +42,11 @@ if(isset($_POST['submit'])){
                 
     
         if ($user['email'] === $email && $user['password'] === $password) {
-   
+
             $_SESSION['username'] = $user['username'];
 
-
-            echo $_SESSION['username'];
+   
+            
             header('Location: index.php');
        
         }else{
