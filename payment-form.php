@@ -21,7 +21,7 @@
         $payment_method = $_POST['payment_method'];
 
 
-        $sql = "INSERT INTO sales (product, quantity, customer_name, customer_address, customer_contact_number, customer_email, price, payment_method) VALUES ('$product', '$quantity', '$customer_name', '$customer_address' , '$customer_contact_number', '$customer_email', '$total_price', '$payment_method')";
+        $sql = "INSERT INTO sales (product, quantity, customer_name, customer_address, customer_contact_number, customer_email, price, payment_method, seller) VALUES ('$product', '$quantity', '$customer_name', '$customer_address' , '$customer_contact_number', '$customer_email', '$total_price', '$payment_method', '$user_name' )";
 
         if (mysqli_query($conn, $sql)){
             header("Location: includes/destroy-sessions.php ");    

@@ -2,11 +2,16 @@
 
 <?php
 session_start();
-  
 
-    if(isset($_POST['submit'])){
-        $email = $password = '';
-        $emailErr = $passwordErr = '';
+if (isset($_SESSION['username'])) {
+    header('Location: index.php');
+}
+
+$email = $password = '';
+$emailErr = $passwordErr = '';
+
+
+if(isset($_POST['submit'])){
         
         
 
@@ -24,16 +29,23 @@ session_start();
         }
 
 
+        
         if(!empty($password)  && !empty($email)){
+
 
         $sql = "SELECT * FROM users WHERE email = '$email'";
         $result = mysqli_query($conn, $sql);
         $user = mysqli_fetch_assoc($result);
 
-
+            
+                
+    
         if ($user['email'] === $email && $user['password'] === $password) {
    
-            $_SESSION['user'] = $user['username'];
+            $_SESSION['username'] = $user['username'];
+
+
+            echo $_SESSION['username'];
             header('Location: index.php');
        
         }else{
@@ -75,14 +87,14 @@ session_start();
 
                 <div class="form-input-ctn">
                     <Label for="email" class="form-input-label">Email </Label>
-                    <input type="email" name="email" class="form-input <?php if(isset($_POST['submit'])){ if($emailErr !== ''){ echo 'err-style' ;} } ?>" placeholder="Enter Email">
-                    <span class="err-message"><?php if(isset($_POST['submit'])){ if($emailErr !== ''){ echo $emailErr; }} ?></span>
+                    <input type="email" name="email" class="form-input <?php echo $emailErr ? 'err-style' : null ; ?>" placeholder="Enter Email">
+                    <span class="err-message"><?php echo $emailErr ? $emailErr: null ; ?></span>
                 </div>
 
                 <div class="form-input-ctn">
                     <Label for="password" class="form-input-label">Password </Label>
-                    <input type="password" class="form-input <?php if(isset($_POST['submit'])){ if($passwordErr !== ''){ echo 'err-style' ;} } ?>" name="password" placeholder="Enter Password">
-                    <span class="err-message"><?php if(isset($_POST['submit'])){ if($passwordErr !== ''){ echo $passwordErr; }} ?></span>
+                    <input type="password" class="form-input <?php echo $passwordErr ? 'err-style' : null ; ?>" name="password" placeholder="Enter Password">
+                    <span class="err-message"><?php echo $passwordErr ? $passwordErr : null ; ?></span>
                 </div>
 
                 <div class="form-submit-ctn">

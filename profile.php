@@ -2,7 +2,7 @@
 
 
 <?php
-    $username = $_SESSION['user'];
+    $username = $_SESSION['username '];
 
 
     

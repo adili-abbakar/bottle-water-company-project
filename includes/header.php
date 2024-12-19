@@ -3,12 +3,18 @@
 
 <?php
 session_start();
-if(!isset($_SESSION['user'])){
+if(!isset($_SESSION['username'])){
 
 
-    header('Location: /bwc/login-form.php');
+    header('Location: login-form.php');
 
-}
+}else{
+    $username = $_SESSION['username'];
+    $sql = "SELECT * FROM users WHERE username = '$username' " ;
+    $result = mysqli_query($conn, $sql);
+    $user = mysqli_fetch_assoc($result);
+    $user_name = $user['name'];}
+
 ?>
 
 <!DOCTYPE html>
@@ -43,7 +49,7 @@ if(!isset($_SESSION['user'])){
                 <a href="index.php">Home</a>
                 <a href="all-sales-record.php">Sales</a>
                 <a href="new-sale-form.php">New Sale</a>
-                <?php if(isset($_SESSION['user'])): ?>
+                <?php if(isset($_SESSION['username'])): ?>
                     <a href="profile.php">Profile</a>
 
                     <a href="includes/logout.php">Logout</a>
