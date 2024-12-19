@@ -84,16 +84,20 @@ if (isset($_POST['submit'])) {
 ?>
 
 <div class="main-ctn">
+    <div class="main-title-ctn">
+        <h2 class="main-title">New Sale Form</h2>
+        <button onclick="window.history.back()" class="btn">Back</button>
+    </div>
 
     <div class="new-sale-form-ctn">
 
-        <form action="" method="POST" class="new-sale-form">
-            <div class="new-sale-form-title">
-                Sale Form
-            </div>
+    <form action="" method="POST" class="new-sale-form">
 
 
-            <div class="new-sale-form-body">
+
+        <div class="new-sale-form-body">
+            <div class="new-sale-form-inputs-main-ctn">
+
                 <div class="new-sale-form-input-ctn">
                     <label class="new-sale-form-input-label" for="product">Product</label>
 
@@ -148,18 +152,20 @@ if (isset($_POST['submit'])) {
 
                 </div>
 
-                <div class="new-sale-form-submit-ctn">
-                    <a href="">
-                        <input type="submit" name="submit" class="new-sale-form-submit btn" value="Next">
-                    </a>
-                </div>
-
-
             </div>
 
-        </form>
+            <div class="new-sale-form-submit-ctn">
+                <a href="">
+                    <input type="submit" name="submit" class="new-sale-form-submit btn" value="Next">
+                </a>
+            </div>
 
-    </div>
+
+        </div>
+
+    </form>
+
+</div>
 
 </div>
 

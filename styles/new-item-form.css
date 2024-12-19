@@ -1,91 +1,84 @@
-:root{
-    --primary-color: rgb(213, 213, 213);
-    --mid-color: rgb(233, 233, 233);
-    --secondary-color: rgb(248, 248, 248);
+:root {
+  --primary-color: rgb(213, 213, 213);
+  --mid-color: rgb(233, 233, 233);
+  --secondary-color: rgb(248, 248, 248);
 
-    --error-color: rgb(252, 75, 11);
-
+  --error-color: rgb(252, 75, 11);
 }
 
+.new-sale-form-ctn {
+  background-color: var(--secondary-color);
+  padding: 10px;
+  border-radius: 5px;
+}
 
-.new-sale-form-ctn{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 30px;
-    width: inherit;
-
+.new-sale-form-body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  flex-direction: column;
 }
 
 .new-sale-form{
-    border-radius: 5px;
-    background-color: var(--secondary-color);
-    width: fit-content;
-    box-shadow: 2px 2px 20px 2px lightgray;
+  width: inherit;
 }
 
-.new-sale-form-title{
-    text-align: center;
-    background-color: var(--primary-color);
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    font-weight: bold;
-    font-size: large;
-    padding: 15px;
-
+.new-sale-form-inputs-main-ctn {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  row-gap: 10px;
+  column-gap: 20px;
+  width: 90%;
 }
 
-.new-sale-form-body{
-    padding: 40px 20px 50px 20px;
-    width: 500px;
+@media (max-width: 500px){
+  .new-sale-form-inputs-main-ctn{
+    display: grid;
+    grid-template-columns: 1fr;
+  }
 }
 
-.new-sale-form-input-ctn{
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-    padding: 5px;
+.new-sale-form-input-ctn {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
 }
 
-.new-sale-form-input-label{
-    font-size: 95%;
+.new-sale-form-input-ctn label{
+  font-size: 90%;
 }
 
-.new-sale-form-input{
-    padding: 5px;
-    font-size: 90%;
-    border-radius: 5px;
-    border: 1px lightgray solid;
-    position: relative;
-    padding-right: 15px;
-    z-index: inherit;
+.new-sale-form-input-ctn input,
+.new-sale-form-input-ctn select,
+.new-sale-form-input-ctn textarea {
+  border: 1px lightgray solid;
+  padding: 7px;
+  border-radius: 5px;
+  font-size: 80%;
+  width: 90%;
 }
 
-
-.new-sale-form-submit-ctn{
-    padding: 20px 10px 10px 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.payment-form-inputs-main-ctn{
+  grid-template-columns: 1fr !important;
 }
+
 
 .payment-form-inner-info{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-top: 20px;
-    gap: 5px    ;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+}
+
+.err-style {
+  border-color: red;
+}
+
+.err-message {
+  color: red;
+  font-size: 90%;
 }
 
 
-
-.err-style{
-   border-color: red; 
-   
-}
-
-
-.err-message{
-    color: red;
-    font-size: 90%;
-}

@@ -6,7 +6,6 @@
 
         $id = $_SESSION['id'];
 
-        unset($_SESSION['id']);
 
         $sale_deatils_sql = "SELECT * FROM sales WHERE  id = '$id' ";
         $result = mysqli_query($conn, $sale_deatils_sql);
@@ -95,7 +94,7 @@
 
 
             <div class="sale-info">
-                <strong>Address: </strong>
+                <strong>Address: ?></strong>
 
                 <?php echo $sale['customer_address']; ?>
 

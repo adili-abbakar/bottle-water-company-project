@@ -1,19 +1,19 @@
-<?php include 'config/database.php' ; ?>
+<?php include 'config/database.php'; ?>
 
 
 <?php
 session_start();
-if(!isset($_SESSION['username'])){
+if (!isset($_SESSION['username'])) {
 
 
     header('Location: login-form.php');
-
-}else{
+} else {
     $username = $_SESSION['username'];
-    $sql = "SELECT * FROM users WHERE username = '$username' " ;
+    $sql = "SELECT * FROM users WHERE username = '$username' ";
     $result = mysqli_query($conn, $sql);
     $user = mysqli_fetch_assoc($result);
-    $user_name = $user['name'];}
+    $user_name = $user['name'];
+}
 
 ?>
 
@@ -30,7 +30,7 @@ if(!isset($_SESSION['username'])){
     <link rel="stylesheet" href="styles/sale-detail.css">
     <link rel="stylesheet" href="styles/all-sales-record.css">
     <link rel="stylesheet" href="styles/new-item-form.css">
-
+    <link rel="stylesheet" href="styles/profile.css">
 
 
     <title>BWC Sales Record.</title>
@@ -49,12 +49,12 @@ if(!isset($_SESSION['username'])){
                 <a href="index.php">Home</a>
                 <a href="all-sales-record.php">Sales</a>
                 <a href="new-sale-form.php">New Sale</a>
-                <?php if(isset($_SESSION['username'])): ?>
+                <?php if (isset($_SESSION['username'])): ?>
                     <a href="profile.php">Profile</a>
 
                     <a href="includes/logout.php">Logout</a>
-                    <?php else: ?>
-                        <a href="login-form.php">Login</a>
+                <?php else: ?>
+                    <a href="login-form.php">Login</a>
 
                 <?php endif; ?>
 
@@ -66,5 +66,3 @@ if(!isset($_SESSION['username'])){
             </div>
         </div>
     </header>
-
-
