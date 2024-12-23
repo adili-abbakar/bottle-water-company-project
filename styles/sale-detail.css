@@ -50,3 +50,11 @@
     font-size: 110%;
     padding: 5px;
 }   
+
+
+.error-message{
+    color: var(--error-color);
+    text-align: center;
+}
+
+

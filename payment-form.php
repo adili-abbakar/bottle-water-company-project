@@ -10,6 +10,7 @@ $customer_contact_number = $_SESSION['customer_contact_number'];
 $customer_email = $_SESSION['customer_email'];
 $total_price =  $_SESSION['total_price'];
 $unit_price = $_SESSION['unit_price'];
+$seller = $logged_in_user['name'];
 
 
 
@@ -21,7 +22,7 @@ if (isset($_POST['submit'])) {
     $payment_method = filter_input(INPUT_POST, 'payment_method', FILTER_SANITIZE_SPECIAL_CHARS);
 
 
-    $sql = "INSERT INTO sales (product, quantity, customer_name, customer_address, customer_contact_number, customer_email, price, payment_method, seller) VALUES ('$product', '$quantity', '$customer_name', '$customer_address' , '$customer_contact_number', '$customer_email', '$total_price', '$payment_method', '$user_name' )";
+    $sql = "INSERT INTO sales (product, quantity, customer_name, customer_address, customer_contact_number, customer_email, price, payment_method, seller) VALUES ('$product', '$quantity', '$customer_name', '$customer_address' , '$customer_contact_number', '$customer_email', '$total_price', '$payment_method', '$seller' )";
 
     if (mysqli_query($conn, $sql)) {
         header('Location: index.php');
@@ -37,7 +38,7 @@ if (isset($_POST['submit'])) {
 <div class="main-ctn">
 
     <div class="main-title-ctn">
-        <h2 class="main-title">New Sale Form</h2>
+        <h2 class="main-title">Sale Form</h2>
         <button onclick="window.history.back()" class="btn">Back</button>
     </div>
     <div class="new-sale-form-ctn">
@@ -61,7 +62,7 @@ if (isset($_POST['submit'])) {
             </div>
 
             <div class="new-sale-form-body">
-                <div class="new-sale-form-inputs-main-ctn payment-form-inputs-main-ctn">
+                <div class="new-sale-form-inputs-main-ctn one-field-form-inputs-main-ctn">
                     <div class="new-sale-form-input-ctn">
                         <label class="new-sale-form-input-label" for="product">Payment Type</label>
                         <select type="text" class="new-sale-form-input" name="payment_method" placeholder="Enter product">

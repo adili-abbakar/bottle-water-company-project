@@ -12,6 +12,9 @@
     border-radius: 5px;
     background-color: var(--secondary-color);
     padding-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 
 .user-info-ctn{

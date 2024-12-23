@@ -124,7 +124,7 @@
 }
 
 .err-style{
-    border-color: red;
+    border-color: var(--error-color);
 }
 
 @media (max-width: 500px) {

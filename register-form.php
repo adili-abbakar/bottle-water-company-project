@@ -6,12 +6,12 @@
 session_start();
 
 
-if(isset($_SESSION['username'])){
+if (isset($_SESSION['username'])) {
     header('Location: index.php');
 }
 
-$name = $username =  $email = $password1 = $password2 = $phone_numberr = $address = '';
-$nameErr = $usernameErr =  $emailErr = $password1Err = $password2Err = $phone_numberrErr = $addressErr =  '';
+$name = $username =  $email = $password1 = $password2 = $phone = $address = '';
+$nameErr = $usernameErr =  $emailErr = $password1Err = $password2Err = $phoneErr = $addressErr =  '';
 
 $sql = "SELECT * FROM users";
 $result = mysqli_query($conn, $sql);
@@ -68,11 +68,23 @@ if (isset($_POST['submit'])) {
         $addressErr = 'Address is required';
     }
 
-    if (!empty($_POST['phone_numberr'])) {
-        $phone_numberr  = filter_input(INPUT_POST, 'phone_numberr', FILTER_SANITIZE_SPECIAL_CHARS);
+    if (!empty($_POST['phone'])) {
+        $phone = filter_input(INPUT_POST, 'phone', FILTER_SANITIZE_SPECIAL_CHARS);
+        $phone_number = $_POST['phone'];
+
+
+        $number_lenght =  strlen($phone_number);
+
+        if($number_lenght > 12){
+            $phoneErr = "Phone number must not exceed 12 numbers";
+        }else{
+            $phone = filter_input(INPUT_POST, 'phone', FILTER_SANITIZE_SPECIAL_CHARS);
+        }
+
     } else {
-        $phone_numberrErr = 'Phone Number is required';
+        $phoneErr = 'Phone number is required';
     }
+
 
     if (!empty($_POST['password1'])) {
         $password1  = $_POST['password1'];
@@ -95,9 +107,9 @@ if (isset($_POST['submit'])) {
 
 
 
-    if (!empty($name) &&  !empty($username) &&  !empty($email) &&  !empty($address) &&  !empty($phone_numberr) &&  !empty($password1) &&  !empty($password2)) {
+    if (!empty($name) &&  !empty($username) &&  !empty($email) &&  !empty($address) &&  !empty($phone) &&  !empty($password1) &&  !empty($password2)) {
 
-        $sql = "INSERT INTO users (name, username, email, address, phone_number, password) VALUES ('$name', '$username', '$email', '$address', '$phone_numberr', '$password1')";
+        $sql = "INSERT INTO users (name, username, email, address, phone, password) VALUES ('$name', '$username', '$email', '$address', '$phone', '$password1')";
 
 
         if (mysqli_query($conn, $sql)) {
@@ -138,45 +150,45 @@ if (isset($_POST['submit'])) {
 
                 <div class="form-input-ctn">
                     <Label for="username" class="form-input-label">Name </Label>
-                    <input type="text" name="name" class="form-input <?php echo $nameErr ? "err-style" : null; ?>" placeholder="Enter Name">
+                    <input type="text" name="name" class="form-input <?php echo $nameErr ? "err-style" : null; ?>" placeholder="Enter Name" value="<?php echo $name; ?>">
                     <span class="err-message"><?php echo $nameErr ? $nameErr : null; ?></span>
 
                 </div>
 
                 <div class="form-input-ctn">
                     <Label for="username" class="form-input-label">Username </Label>
-                    <input type="text" name="username" class="form-input <?php echo $usernameErr ? "err-style" : null; ?> " placeholder="Enter Username">
-                    <span class="err-message"><?php echo $usernameErr ? $usernameErr : null; ?></span>
+                    <input type="text" name="username" class="form-input <?php echo $usernameErr ? "err-style" : null; ?> " placeholder="Enter Username" value="<?php echo $username; ?>">
+                    <span class=" err-message"><?php echo $usernameErr ? $usernameErr : null; ?></span>
 
 
                 </div>
 
                 <div class="form-input-ctn">
                     <Label for="email" class="form-input-label">Email </Label>
-                    <input type="text" name="email" class="form-input <?php echo $emailErr ? "err-style" : null; ?>" " placeholder=" Enter Email">
-                    <span class="err-message"><?php echo $emailErr ? $emailErr : null; ?></span>
+                    <input type="email" name="email" class="form-input <?php echo $emailErr ? "err-style" : null; ?>" placeholder=" Enter Email" value="<?php echo $email; ?>">
+                    <span class=" err-message"><?php echo $emailErr ? $emailErr : null; ?></span>
 
                 </div>
 
 
                 <div class="form-input-ctn">
-                    <Label for="phone_numberr" class="form-input-label">Phone Number </Label>
-                    <input type="number" name="phone_numberr" class="form-input <?php echo $phone_numberrErr ? "err-style" : null; ?>" placeholder=" Enter Phone Number">
-                    <span class="err-message"><?php echo $phone_numberrErr ? $phone_numberrErr : null; ?></span>
+                    <Label for="phone" class="form-input-label">Phone Number </Label>
+                    <input maxlenght="15" type="number" name="phone" class="form-input ><?php echo $phoneErr ? 'err-style' : null; ?>" placeholder=" Enter Phone Number" value="<?php echo $phone; ?>">
+                    <span class=" err-message"><?php echo $phoneErr ? $phoneErr : null; ?></span>
 
                 </div>
 
                 <div class="form-input-ctn">
                     <Label for="address" class="form-input-label">Address </Label>
-                    <input type="text" name="address" class="form-input <?php echo $addressErr ? 'err-style' : null; ?>" placeholder="Enter Address">
-                    <span class="err-message"><?php echo $addressErr ? $addressErr : null;  ?></span>
+                    <input type="text" name="address" class="form-input <?php echo $addressErr ? 'err-style' : null; ?>" placeholder="Enter Address" value="<?php echo $address; ?>">
+                    <span class=" err-message"><?php echo $addressErr ? $addressErr : null;  ?></span>
 
                 </div>
 
                 <div class="form-input-ctn">
                     <Label for="password1" class="form-input-label">Password </Label>
                     <input type="password" class="form-input <?php echo $password1Err ? 'err-style' : null; ?>" name="password1" placeholder="Enter Password">
-                    <span class="err-message"><?php echo $password1Err ? $password1Err : null; ?></span>
+                    <span class=" err-message"><?php echo $password1Err ? $password1Err : null; ?></span>
 
                 </div>
 

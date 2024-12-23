@@ -2,25 +2,24 @@
 
 <?php
 
-    if(isset($_SESSION['id'])){
+if (isset($_SESSION['id'])) {
 
-        $id = $_SESSION['id'];
+    $id = $_SESSION['id'];
 
 
-        $sale_deatils_sql = "SELECT * FROM sales WHERE  id = '$id' ";
-        $result = mysqli_query($conn, $sale_deatils_sql);
-        $sale = mysqli_fetch_assoc($result);
+    $sale_deatils_sql = "SELECT * FROM sales WHERE  id = '$id' ";
+    $result = mysqli_query($conn, $sale_deatils_sql);
+    $sale = mysqli_fetch_assoc($result);
 
-        $product_name = $sale['product'];
-        // echo $name;
-        $sale_product = "SELECT * FROM products WHERE name = '$product_name' ";
-        $result = mysqli_query($conn, $sale_product);
-        $sale_product = mysqli_fetch_assoc($result);
-
-    }else{
-        echo 'Failed';
-    }
-    ?>
+    $product_name = $sale['product'];
+    // echo $name;
+    $sale_product = "SELECT * FROM products WHERE name = '$product_name' ";
+    $result = mysqli_query($conn, $sale_product);
+    $sale_product = mysqli_fetch_assoc($result);
+} else {
+    echo 'Failed';
+}
+?>
 
 
 <div class="main-ctn">
@@ -36,7 +35,7 @@
 
             <div class="sale-info">
                 <strong>Id: </strong>
-                    <?php echo $sale['id']; ?>
+                <?php echo $sale['id']; ?>
             </div>
 
 
@@ -54,7 +53,7 @@
 
             </div>
 
-            
+
             <div class="sale-info">
                 <strong> Quantity: </strong>
                 <?php echo $sale['quantity']; ?>
@@ -94,9 +93,10 @@
 
 
             <div class="sale-info">
-                <strong>Address: ?></strong>
+                <strong>Address: </strong>
 
                 <?php echo $sale['customer_address']; ?>
+
 
 
             </div>

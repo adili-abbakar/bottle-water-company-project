@@ -2,7 +2,7 @@
 define('DB_HOST', 'localhost');
 define('DB_USER', 'adeelee');
 define('DB_PASS', 'Aa22822527#');
-define('DB_NAME', 'bwc');
+define('DB_NAME', 'btw');
 
 
 

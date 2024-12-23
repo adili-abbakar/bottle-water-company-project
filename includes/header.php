@@ -11,8 +11,8 @@ if (!isset($_SESSION['username'])) {
     $username = $_SESSION['username'];
     $sql = "SELECT * FROM users WHERE username = '$username' ";
     $result = mysqli_query($conn, $sql);
-    $user = mysqli_fetch_assoc($result);
-    $user_name = $user['name'];
+    $logged_in_user = mysqli_fetch_assoc($result);
+
 }
 
 ?>

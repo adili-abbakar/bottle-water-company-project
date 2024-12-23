@@ -1,6 +1,6 @@
 <?php include('config/database.php'); ?>
 
-<?php 
+<?php
 
 session_start();
 
@@ -12,49 +12,46 @@ $email = $password = '';
 $emailErr = $passwordErr = '';
 
 
-if(isset($_POST['submit'])){
-        
-        
-
-        if (!empty($_POST['email'])) {
-            $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
-        }else{
-            $emailErr = 'Email is required'; 
-        }
+if (isset($_POST['submit'])) {
 
 
-        if(!empty($_POST['password'])){
+
+    if (!empty($_POST['email'])) {
+        $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
+    } else {
+        $emailErr = 'Email is required';
+    }
+
+
+    if (!empty($_POST['password'])) {
         $password = $_POST['password'];
-        }else{
-            $passwordErr = 'Password is required';
-        }
+    } else {
+        $passwordErr = 'Password is required';
+    }
 
 
-        
-        if(!empty($password)  && !empty($email)){
+
+    if (!empty($password)  && !empty($email)) {
 
 
         $sql = "SELECT * FROM users WHERE email = '$email'";
         $result = mysqli_query($conn, $sql);
         $user = mysqli_fetch_assoc($result);
 
-            
-                
-    
-        if ($user['email'] === $email && $user['password'] === $password) {
+        if($user){
+            if ($user['email'] === $email && $user['password'] === $password) {
 
-            $_SESSION['username'] = $user['username'];
+                $_SESSION['username'] = $user['username'];
 
-   
-            
-            header('Location: index.php');
-       
+                header('Location: index.php');
+            } else {
+                $incorrect_msg = 'Incorrect email or password';
+            }
         }else{
-            $incorrect_msg = 'Incorrect email or password';
-        }
-
+            $emailErr = 'Account with this email does not exist';
         }
     }
+}
 
 
 ?>
@@ -80,22 +77,22 @@ if(isset($_POST['submit'])){
             </div>
             <div class="form-body">
 
-            <?php if(!empty($incorrect_msg)){ 
+                <?php if (!empty($incorrect_msg)) {
 
-                echo ' <p class="error-message"> '. $incorrect_msg .' </p> ';
-            }
+                    echo ' <p class="error-message"> ' . $incorrect_msg . ' </p> ';
+                }
                 ?>
 
                 <div class="form-input-ctn">
                     <Label for="email" class="form-input-label">Email </Label>
-                    <input type="email" name="email" class="form-input <?php echo $emailErr ? 'err-style' : null ; ?>" placeholder="Enter Email">
-                    <span class="err-message"><?php echo $emailErr ? $emailErr: null ; ?></span>
+                    <input type="email" name="email" class="form-input <?php echo $emailErr ? 'err-style' : null; ?>" placeholder="Enter Email" <?php echo " value= '$email'  "; ?>>
+                    <span class="err-message"><?php echo $emailErr ? $emailErr : null; ?></span>
                 </div>
 
                 <div class="form-input-ctn">
                     <Label for="password" class="form-input-label">Password </Label>
-                    <input type="password" class="form-input <?php echo $passwordErr ? 'err-style' : null ; ?>" name="password" placeholder="Enter Password">
-                    <span class="err-message"><?php echo $passwordErr ? $passwordErr : null ; ?></span>
+                    <input type="password" class="form-input <?php echo $passwordErr ? 'err-style' : null; ?>" name="password" placeholder="Enter Password">
+                    <span class="err-message"><?php echo $passwordErr ? $passwordErr : null; ?></span>
                 </div>
 
                 <div class="form-submit-ctn">

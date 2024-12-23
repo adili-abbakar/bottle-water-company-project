@@ -85,87 +85,87 @@ if (isset($_POST['submit'])) {
 
 <div class="main-ctn">
     <div class="main-title-ctn">
-        <h2 class="main-title">New Sale Form</h2>
+        <h2 class="main-title">New Sale</h2>
         <button onclick="window.history.back()" class="btn">Back</button>
     </div>
 
     <div class="new-sale-form-ctn">
 
-    <form action="" method="POST" class="new-sale-form">
+        <form action="" method="POST" class="new-sale-form">
 
 
 
-        <div class="new-sale-form-body">
-            <div class="new-sale-form-inputs-main-ctn">
+            <div class="new-sale-form-body">
+                <div class="new-sale-form-inputs-main-ctn">
 
-                <div class="new-sale-form-input-ctn">
-                    <label class="new-sale-form-input-label" for="product">Product</label>
-
-
-                    <select type="text" class="new-sale-form-input  <?php echo $productErr ? 'err-style' : null; ?>" name="product" placeholder="Enter product">
-
-                        <?php foreach ($products as $item): ?>
-                            <option value="<?php echo $item['name']; ?>"><?php echo $item['name']; ?></option>
-                        <?php endforeach; ?>
+                    <div class="new-sale-form-input-ctn">
+                        <label class="new-sale-form-input-label" for="product">Product</label>
 
 
-                    </select>
+                        <select type="text" class="new-sale-form-input  <?php echo $productErr ? 'err-style' : null; ?>" name="product" placeholder="Enter product">
+
+                            <?php foreach ($products as $item): ?>
+                                <option value="<?php echo $item['name']; ?>"><?php echo $item['name']; ?></option>
+                            <?php endforeach; ?>
 
 
-                    <span class="err-message"><?php echo $productErr ? $productErr : null; ?></span>
+                        </select>
+
+
+                        <span class="err-message"><?php echo $productErr ? $productErr : null; ?></span>
+
+                    </div>
+
+                    <div class="new-sale-form-input-ctn">
+                        <label class="new-sale-form-input-label" for="quantity">Quantity (Wrap pack)</label>
+                        <input type="number" class="new-sale-form-input <?php echo $quantityErr ? 'err-style' : null; ?> " name="quantity" value="<?php echo $quantity; ?>" placeholder="Enter quantity">
+                        <span class="err-message"><?php echo $quantityErr ? $quantityErr : null; ?></span>
+
+                    </div>
+
+                    <div class="new-sale-form-input-ctn">
+                        <label class="new-sale-form-input-label" for="customer_name">Customer Name</label>
+                        <input type="text" class="new-sale-form-input  <?php echo $customer_nameErr ? 'errr-style' : null; ?>" name="customer_name" value="<?php echo $customer_name; ?>" placeholder="Enter Customer Name">
+                        <span class="err-message"><?php echo $customer_nameErr ? $customer_nameErr : null; ?></span>
+
+                    </div>
+
+                    <div class="new-sale-form-input-ctn">
+                        <label class="new-sale-form-input-label" for="customer_email">Customer Email</label>
+                        <input type="email" class="new-sale-form-input  <?php echo $customer_emailErr ? 'err-style' : null; ?>" name="customer_email" value=" <?php echo $customer_email; ?>" placeholder="Enter Customer Email">
+                        <span class="err-message"><?php echo $customer_emailErr ? $customer_emailErr : null; ?></span>
+
+                    </div>
+
+                    <div class="new-sale-form-input-ctn">
+                        <label class="new-sale-form-input-label" for="customer_contact_number">Customer Contact Number</label>
+                        <input type="number" class="new-sale-form-input  <?php echo $customer_contact_numberErr ? 'err-style' : null; ?>" name="customer_contact_number" value="<?php echo $customer_contact_number; ?>" placeholder="Enter Customer Contact Number">
+                        <span class="err-message"><?php echo $customer_contact_numberErr ? $customer_contact_numberErr : null; ?></span>
+
+                    </div>
+
+
+                    <div class="new-sale-form-input-ctn">
+                        <label class="new-sale-form-input-label" for="customer_address">Customer Address</label>
+                        <input type="text" class="new-sale-form-input  <?php echo $customer_addressErr ? 'err-style' : null; ?>" name="customer_address" value="<?php echo $customer_address; ?>" placeholder="Enter Customer Addres">
+                        <span class="err-message"> <?php echo $customer_addressErr ? $customer_addressErr : null; ?></span>
+
+                    </div>
 
                 </div>
 
-                <div class="new-sale-form-input-ctn">
-                    <label class="new-sale-form-input-label" for="quantity">Quantity (Wrap pack)</label>
-                    <input type="number" class="new-sale-form-input <?php echo $quantityErr ? 'err-style' : null; ?> " name="quantity" placeholder="Enter quantity">
-                    <span class="err-message"><?php echo $quantityErr ? $quantityErr : null; ?></span>
-
+                <div class="new-sale-form-submit-ctn">
+                    <a href="">
+                        <input type="submit" name="submit" class="new-sale-form-submit btn" value="Next">
+                    </a>
                 </div>
 
-                <div class="new-sale-form-input-ctn">
-                    <label class="new-sale-form-input-label" for="customer_name">Customer Name</label>
-                    <input type="text" class="new-sale-form-input  <?php echo $customer_nameErr ? 'errr-style' : null; ?>" name="customer_name" placeholder="Enter Customer Name">
-                    <span class="err-message"><?php echo $customer_nameErr ? $customer_nameErr : null; ?></span>
-
-                </div>
-
-                <div class="new-sale-form-input-ctn">
-                    <label class="new-sale-form-input-label" for="customer_email">Customer Email</label>
-                    <input type="email" class="new-sale-form-input  <?php echo $customer_emailErr ? 'err-style' : null; ?>" name="customer_email" placeholder="Enter Customer Email">
-                    <span class="err-message"><?php echo $customer_emailErr ? $customer_emailErr : null; ?></span>
-
-                </div>
-
-                <div class="new-sale-form-input-ctn">
-                    <label class="new-sale-form-input-label" for="customer_contact_number">Customer Contact Number</label>
-                    <input type="number" class="new-sale-form-input  <?php echo $customer_contact_numberErr ? 'err-style' : null; ?>" name="customer_contact_number" placeholder="Enter Customer Contact Number">
-                    <span class="err-message"><?php echo $customer_contact_numberErr ? $customer_contact_numberErr : null; ?></span>
-
-                </div>
-
-
-                <div class="new-sale-form-input-ctn">
-                    <label class="new-sale-form-input-label" for="customer_address">Customer Address</label>
-                    <input type="text" class="new-sale-form-input  <?php echo $customer_addressErr ? 'err-style' : null; ?>" name="customer_address" placeholder="Enter Customer Addres">
-                    <span class="err-message"> <?php echo $customer_addressErr ? $customer_addressErr : null; ?></span>
-
-                </div>
 
             </div>
 
-            <div class="new-sale-form-submit-ctn">
-                <a href="">
-                    <input type="submit" name="submit" class="new-sale-form-submit btn" value="Next">
-                </a>
-            </div>
+        </form>
 
-
-        </div>
-
-    </form>
-
-</div>
+    </div>
 
 </div>
 
