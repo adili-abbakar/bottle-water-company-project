@@ -41,12 +41,12 @@ if (isset($_POST['submit'])) {
 }
 
 
-if(!empty($new_password && $confirm_password)){
+if (!empty($new_password && $confirm_password)) {
     $sql = "UPDATE users SET password = '$confirm_password' WHERE id=$id";
 
-    if(mysqli_query($conn, $sql)){
-        header('Location: /bwc/profile.php');
-    }else{
+    if (mysqli_query($conn, $sql)) {
+        header('Location: /bottle_water_company_project/profile.php');
+    } else {
         echo "Invalid Query: " . mysqli_query($conn, $sql);
     }
 }

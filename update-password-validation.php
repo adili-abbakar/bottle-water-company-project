@@ -25,7 +25,7 @@ if (isset($_POST['submit'])) {
         $password =  filter_input(INPUT_POST, 'password', FILTER_SANITIZE_SPECIAL_CHARS);
 
         if ($password === $current_password) {
-            header("Location: /bwc/update-password.php?id= $id");
+            header("Location: /bottle_water_company_project/update-password.php?id= $id");
         } else {
             $passwordErr = 'Incorrect Password';
         }

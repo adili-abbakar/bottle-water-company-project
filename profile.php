@@ -18,8 +18,8 @@
 
 
         <div class="btn-ctn profile-btns-ctn">
-            <a href="/bwc/update-form.php?id=<?php echo $logged_in_user['id'];?>"><button class="btn">Update Profile</button></a>
-            <a href="/bwc/update-password-validation.php?id=<?php echo $logged_in_user['id']; ?>"> <button class="btn">Change Password</button></a>
+            <a href="/bottle_water_company_project/update-form.php?id=<?php echo $logged_in_user['id']; ?>"><button class="btn">Update Profile</button></a>
+            <a href="/bottle_water_company_project/update-password-validation.php?id=<?php echo $logged_in_user['id']; ?>"> <button class="btn">Change Password</button></a>
 
 
 
