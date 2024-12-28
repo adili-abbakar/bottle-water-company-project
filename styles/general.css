@@ -1,3 +1,16 @@
+:root {
+    --primary-color: rgb(213, 213, 213);
+    --mid-color: rgb(233, 233, 233);
+    --secondary-color: rgb(248, 248, 248);
+  
+    --error-color: rgb(252, 27, 11);
+    --color-success: #5dd693;
+    --color-update: #fac61c;
+
+  
+  }
+  
+
 body{
     padding-top: 75px;
     padding-bottom: 55px;
@@ -36,6 +49,24 @@ body{
 }
 
 
+
+.table-btns-ctn{
+    width: max-content;
+    height: max-content;
+    margin: 3px;
+    display: flex;
+    align-items: center;
+    justify-self: center;
+    gap: 3px;
+
+}
+
+@media (max-width: 600px) {
+    .table-btns-ctn{
+        flex-direction: column;
+    }   
+}
+
 .btn{
     background-color: var(--primary-color);
     border: none;
@@ -60,6 +91,23 @@ body{
     transition: 0.2s;
     padding: 5px 15px;
 }
+
+.add-btn:hover{
+    background-color: var(--color-success);
+    opacity: 1;
+
+}
+
+.remove-btn:hover{
+    background-color: var(--error-color);
+    opacity: 1;
+}
+
+.update-btn:hover{
+    background-color: var(--color-update);
+    opacity: 1;
+}
+
 
 .error-message{
     color: var(--error-color);

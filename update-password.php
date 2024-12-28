@@ -93,7 +93,7 @@ if (!empty($new_password && $confirm_password)) {
                 <div class="new-sale-form-submit-ctn">
 
                     <a href="">
-                        <input type="submit" name="submit" class="new-sale-form-submit btn" value="Next">
+                        <input type="submit" name="submit" class="new-sale-form-submit btn" value="Update">
                     </a>
                 </div>
 

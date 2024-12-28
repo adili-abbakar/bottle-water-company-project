@@ -12,6 +12,9 @@
             <div class="user-info">Email: <?php echo $logged_in_user['email']; ?></div>
             <div class="user-info">Address: <?php echo $logged_in_user['address']; ?></div>
             <div class="user-info">Phone Number: <?php echo $logged_in_user['phone']; ?></div>
+            <div class="user-info">Role: <?php  echo !empty($role_id) ? $logged_in_user['role_name'] : 'None'; ?></div>
+
+
 
         </div>
 

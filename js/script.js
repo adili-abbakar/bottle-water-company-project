@@ -1,7 +1,4 @@
 
-
-
-
 let tableRow = document.querySelectorAll('.sale-table tr');
 
 

@@ -87,31 +87,33 @@ if (isset($_POST['submit'])) {
         $address = '';
     }
 
-    if (!empty($_POST['phone'])) {
+    if(!empty($_POST['phone'])){
         $phone = filter_input(INPUT_POST, 'phone', FILTER_SANITIZE_SPECIAL_CHARS);
 
         $phone_number = $_POST['phone'];
         $number_lenght =  strlen($phone_number);
 
-        if ($number_lenght > 12) {
+        if($number_lenght > 12){
             $phoneErr = "Phone number must not exceed 12 numbers";
-        } else {
+        }else{
             $phone = filter_input(INPUT_POST, 'phone', FILTER_SANITIZE_SPECIAL_CHARS);
         }
-    } else {
+
+
+    }else{
         $phoneErr = 'Phone number is required';
         $phone = '';
     }
 
 
     if (empty($nameErr) && empty($usernameErr) && empty($emailErr) && empty($addressErr) && empty($phoneErr)) {
-
+        
 
         $sql = "UPDATE users SET name = '$name', email='$email', username='$username', address='$address', phone='$phone' WHERE id='$id' ";
 
         if (mysqli_query($conn, $sql)) {
             $_SESSION['username'] = $username;
-            header('Location: /bottle_water_company_project/profile.php');
+            header('Location: /bwc/profile.php');
         } else {
             echo "Invalid Query: " . mysqli_query($conn, $sql);
         }
@@ -140,7 +142,7 @@ if (isset($_POST['submit'])) {
 
                     <input type="hidden" name="id" value="<?php echo $user['id']; ?>">
 
-
+    
 
                     <div class="new-sale-form-input-ctn">
                         <label class="new-sale-form-input-label" for="name">Name</label>

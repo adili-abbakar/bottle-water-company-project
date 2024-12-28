@@ -17,6 +17,8 @@
         <div class="dashboard-navigation-links">
             <a href="new-sale-form.php "><button class="btn"> + New Sale</button></a>
            <a href="all-sales-record.php"> <button class="btn"> All Sales Record</button></a>
+           <a href="products-management.php"> <button class="btn"> Products Managment</button></a>
+
     
 
             
@@ -45,8 +47,8 @@
             <?php foreach ($products as $product): ?>
                 <tr class="sale-row" data-id="<?php echo $sale['id']; ?>">
                     <td><?php echo  $product['name']; ?></td>
-                    <td>  NGN <?php echo  $product['price']/12; ?></td>
-                    <td>  NGN <?php echo  $product['price']; ?></td>
+                    <td>  NGN <?php echo  $product['piece_price']; ?></td>
+                    <td>  NGN <?php echo  $product['wrap_pack_price']; ?></td>
 
 
                 </tr>
