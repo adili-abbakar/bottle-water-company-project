@@ -70,7 +70,7 @@ if ($logged_in_user['role_name'] ===  "Admin" || $logged_in_user['role_name'] ==
                 <strong> Unit Price : </strong>
 
 
-                NGN <?php echo $sale['product_price_at_sale_time']; ?>
+                NGN <?php echo number_format($sale['product_price_at_sale_time'], 2); ?>
 
 
             </div>
@@ -78,7 +78,7 @@ if ($logged_in_user['role_name'] ===  "Admin" || $logged_in_user['role_name'] ==
             <div class="sale-info">
                 <strong>Total Price : </strong>
 
-                NGN <?php echo $sale['payment_amount']; ?>
+                NGN <?php echo number_format($sale['payment_amount'], 2); ?>
 
 
             </div>
@@ -144,7 +144,7 @@ if ($logged_in_user['role_name'] ===  "Admin" || $logged_in_user['role_name'] ==
             <div class="sale-info">
                 <strong>Amount Paid: </strong>
 
-                NGN <?php echo $sale['payment_amount']; ?>
+                NGN <?php echo number_format($sale['payment_amount'], 2); ?>
 
 
             </div>

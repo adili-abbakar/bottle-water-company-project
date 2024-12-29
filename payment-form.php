@@ -7,7 +7,7 @@ $product_quantity =  $_SESSION['product_quantity'];
 $customer_name = $_SESSION['customer_name'];
 $customer_address = $_SESSION['customer_address'];
 $customer_phone = $_SESSION['customer_contact_number'];
-$customer_email = $_SESSION['customer_email'];
+$customer_email = $_SESSION['customer_email']; $customer_email = empty($customer_email) ? null : $customer_email;
 $total_price =  $_SESSION['total_price'];
 $unit_price = $_SESSION['unit_price'];
 $seller_id = $logged_in_user['id'];
@@ -20,7 +20,6 @@ $result = $stmt->get_result();
 $product = $result->fetch_assoc();
 $payment_amount = ($product['wrap_pack_price'] * $product_quantity);
 
-$payment_amount = sprintf("%.2f", $payment_amount);
 $product_price_at_sale_time =  sprintf("%.2f", ($product['wrap_pack_price']));
 
 
@@ -34,6 +33,9 @@ if (isset($_POST['submit'])) {
     $stmt = $conn->prepare("INSERT INTO sales (customer_name, customer_email , customer_address, customer_phone, product_id ,product_quantity, product_price_at_sale_time, seller_id, payment_amount, payment_method) VALUES (?,?,?,?,?,?,?,?,?,?) ");
 
     if($stmt){
+
+        
+        
         $stmt->bind_param("ssssiidids",$customer_name, $customer_email , $customer_address, $customer_phone, $product_id ,$product_quantity, $product_price_at_sale_time, $seller_id, $payment_amount, $payment_method );
 
         if($stmt->execute()){
@@ -49,7 +51,6 @@ if (isset($_POST['submit'])) {
 
 }else{
     header("Location: restriction-page.php");
-
 }
 
 ?>
@@ -74,7 +75,7 @@ if (isset($_POST['submit'])) {
 
                 <div class="payment-inner-info-message">
                     <div>
-                        Unit Price: NGN <?php echo $product['wrap_pack_price'];  ?>
+                        Unit Price: NGN <?php echo number_format($product['wrap_pack_price'], 2);  ?>
                     </div>
                     <div>
                         Quantity: <?php echo $product_quantity; ?>
@@ -82,7 +83,7 @@ if (isset($_POST['submit'])) {
                 </div>
 
                 <div class="payment-inner-info-message">
-                    Total Price: NGN <?php echo $payment_amount; ?>
+                    Total Price: NGN <?php echo number_format($payment_amount, 2); ?>
                 </div>
             </div>
 

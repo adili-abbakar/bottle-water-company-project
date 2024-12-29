@@ -52,7 +52,7 @@ $products = $result->fetch_all(MYSQLI_ASSOC);
                 <tr class="sale-row" data-id="<?php echo $sale['id']; ?>">
                     <td><?php echo  $product['product_name']; ?></td>
                     <td> NGN <?php echo  $product['piece_price']; ?></td>
-                    <td> NGN <?php echo  $product['wrap_pack_price']; ?></td>
+                    <td> NGN <?php echo  number_format($product['wrap_pack_price'], 2); ?></td>
 
                     <td>
                         <div class="table-btns-ctn">

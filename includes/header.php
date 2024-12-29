@@ -40,14 +40,7 @@ if (!isset($_SESSION['username'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles/header.css">
-    <link rel="stylesheet" href="styles/general.css">
-    <link rel="stylesheet" href="styles/footer.css">
-    <link rel="stylesheet" href="styles/dashboard.css">
-    <link rel="stylesheet" href="styles/sale-detail.css">
-    <link rel="stylesheet" href="styles/all-sales-record.css">
-    <link rel="stylesheet" href="styles/new-item-form.css">
-    <link rel="stylesheet" href="styles/profile.css">
+    <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/form.css">
     <link
         rel="stylesheet"
@@ -60,7 +53,7 @@ if (!isset($_SESSION['username'])) {
     <title>BWC Sales Record.</title>
 </head>
 
-<body>
+<body class="main-body">
 
     <header>
         <div class="header-main-ctn">
@@ -71,7 +64,7 @@ if (!isset($_SESSION['username'])) {
 
             <div class="navigation-links">
                 <a href="index.php">Home</a> /
-                <?php echo ($logged_in_user['role_name'] ===  "Admin" || $logged_in_user['role_name'] === "Accountant" || $logged_in_user['role_name'] ===  "Sale Agent")  ? "<a href='all-sales-record.php'>Sales</a> /" : null;  ?>
+                <?php echo ($logged_in_user['role_name'] ===  "Admin" || $logged_in_user['role_name'] === "Accountant" || $logged_in_user['role_name'] ===  "Sale Agent")  ? "<a href='all-sales-record.php'>Sales Record</a> /" : null;  ?>
                 <?php echo ($logged_in_user['role_name'] ===  "Admin" || $logged_in_user['role_name'] === "Sale Agent") ? "<a href='new-sale-form.php'>New Sale</a> /" : null;  ?>
                 <?php echo ($logged_in_user['role_name'] ===  "Admin" || $logged_in_user['role_name'] === "Inventory Manager") ? "<a href='products-management.php'>Products management</a> /" : null;  ?>
 

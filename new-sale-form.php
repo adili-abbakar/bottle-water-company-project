@@ -24,31 +24,13 @@ if ($logged_in_user['role_name'] ===  "Admin" || $logged_in_user['role_name'] ==
         $product_quantity = $product_quantity_validation['value'];
         $product_quantityErr = $product_quantity_validation['error'];
 
-        $customer_name_validation = validateInput($_POST['customer_name'], "Customer Name");
-        $customer_name = $customer_name_validation['value'];
-        $customer_nameErr = $customer_name_validation['error'];
+        $customer_name = $_POST['customer_name'];
+        $customer_email = $_POST['customer_email'];
+        $customer_contact_number = $_POST['customer_contact_number'];
+        $customer_address = $_POST['customer_address'];
+   
 
-
-        $customer_email_validation = validateInput($_POST['customer_email'], "Customer Email");
-        $customer_email = $customer_email_validation['value'];
-        $customer_emailErr = $customer_email_validation['error'];
-
-
-        $customer_contact_number_validation = validateInput($_POST['customer_contact_number'], "Customer Contact Number");
-        $customer_contact_number = $customer_contact_number_validation['value'];
-        $customer_contact_numberErr = $customer_contact_number_validation['error'];
-
-        $customer_address_validation = validateInput($_POST['customer_address'], "Customer Address");
-        $customer_address = $customer_address_validation['value'];
-        $customer_addressErr = $customer_address_validation['error'];
-
-
-
-
-
-        if (empty($product_idErr) && empty($product_quantityErr) && empty($customer_nameErr) && empty($customer_emailErr) && empty($customer_contact_numberErr) && empty($customer_addressErr)) {
-
-
+        if (empty($product_idErr) && empty($product_quantityErr)) {
 
             $_SESSION['unit_price'] = $unit_price;
             $_SESSION['product_id'] = $product_id;
@@ -96,10 +78,6 @@ if ($logged_in_user['role_name'] ===  "Admin" || $logged_in_user['role_name'] ==
                                     <?php echo $item['product_name']; ?>
                                 </option>
                             <?php endforeach; ?>
-
-
-
-
                         </select>
 
 
@@ -116,30 +94,30 @@ if ($logged_in_user['role_name'] ===  "Admin" || $logged_in_user['role_name'] ==
                     </div>
 
                     <div class="new-sale-form-input-ctn">
-                        <label class="new-sale-form-input-label" for="customer_name">Customer Name</label>
-                        <input type="text" class="new-sale-form-input  <?php echo $customer_nameErr ? 'err-style' : null; ?>" name="customer_name" value="<?php echo $customer_name; ?>" placeholder="Enter Customer Name">
-                        <span class="err-message"><?php echo $customer_nameErr ? $customer_nameErr : null; ?></span>
+                        <label class="new-sale-form-input-label" for="customer_name">Customer Name (Optional)</label>
+                        <input type="text" class="new-sale-form-input" name="customer_name" value="<?php echo $customer_name; ?>" placeholder="Enter Customer Name">
+           
 
                     </div>
 
                     <div class="new-sale-form-input-ctn">
-                        <label class="new-sale-form-input-label" for="customer_email">Customer Email</label>
-                        <input type="email" class="new-sale-form-input  <?php echo $customer_emailErr ? 'err-style' : null; ?>" name="customer_email" value=" <?php echo $customer_email; ?>" placeholder="Enter Customer Email">
+                        <label class="new-sale-form-input-label" for="customer_email">Customer Email (Optional)</label>
+                        <input type="email" class="new-sale-form-input" name="customer_email" value=" <?php echo $customer_email; ?>" placeholder="Enter Customer Email">
                         <span class="err-message"><?php echo $customer_emailErr ? $customer_emailErr : null; ?></span>
 
                     </div>
 
                     <div class="new-sale-form-input-ctn">
-                        <label class="new-sale-form-input-label" for="customer_contact_number">Customer Contact Number</label>
-                        <input type="number" class="new-sale-form-input  <?php echo $customer_contact_numberErr ? 'err-style' : null; ?>" name="customer_contact_number" value="<?php echo $customer_contact_number; ?>" placeholder="Enter Customer Contact Number">
+                        <label class="new-sale-form-input-label" for="customer_contact_number">Customer Contact Number (Optional)</label>
+                        <input type="number" class="new-sale-form-input " name="customer_contact_number" value="<?php echo $customer_contact_number; ?>" placeholder="Enter Customer Contact Number">
                         <span class="err-message"><?php echo $customer_contact_numberErr ? $customer_contact_numberErr : null; ?></span>
 
                     </div>
 
 
                     <div class="new-sale-form-input-ctn">
-                        <label class="new-sale-form-input-label" for="customer_address">Customer Address</label>
-                        <input type="text" class="new-sale-form-input  <?php echo $customer_addressErr ? 'err-style' : null; ?>" name="customer_address" value="<?php echo $customer_address; ?>" placeholder="Enter Customer Addres">
+                        <label class="new-sale-form-input-label" for="customer_address">Customer Address (Optional)</label>
+                        <input type="text" class="new-sale-form-input" name="customer_address" value="<?php echo $customer_address; ?>" placeholder="Enter Customer Addres">
                         <span class="err-message"> <?php echo $customer_addressErr ? $customer_addressErr : null; ?></span>
 
                     </div>

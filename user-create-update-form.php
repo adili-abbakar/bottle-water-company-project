@@ -4,21 +4,14 @@ include('includes/header.php');
 
 if ($logged_in_user['role_name']  === "Admin") {
 
-
-
     $id = $name = $username =  $email = $phone = $address = $password1 = $password2 = $role_id = '';
     $nameErr = $usernameErr =  $emailErr  = $phoneErr = $addressErr = $password1Err = $password2Err = $role_idErr = '';
-
-
 
     $stmt = $conn->prepare("SELECT * FROM roles");
     $stmt->execute();
     $result = $stmt->get_result();
     $roles  = $result->fetch_all(MYSQLI_ASSOC);
     $stmt->close();
-
-
-
 
     if (isset($_GET['action']) && isset($_GET['page'])) {
 

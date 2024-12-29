@@ -20,7 +20,7 @@ $products = $result->fetch_all(MYSQLI_ASSOC);
 
         <?php echo ($logged_in_user['role_name'] ===  "Admin" || $logged_in_user['role_name'] ===  "Sale Agent" ) ? '<a href="new-sale-form.php "><button class="btn"> + New Sale</button></a>' : ''; ?>
         <?php echo ($logged_in_user['role_name'] ===  "Admin" 
-        || $logged_in_user['role_name'] ===  "Accountant" || $logged_in_user['role_name'] ===  "Sale Agent") ? '<a href="all-sales-record.php"> <button class="btn"> All Sales Record</button></a>' : ''; ?>
+        || $logged_in_user['role_name'] ===  "Accountant" || $logged_in_user['role_name'] ===  "Sale Agent") ? '<a href="all-sales-record.php"> <button class="btn"> Sales Record</button></a>' : ''; ?>
         <?php echo ($logged_in_user['role_name'] ===  "Admin" || $logged_in_user['role_name'] ===  "Inventory Manager") ? '<a href="products-management.php"> <button class="btn"> Products Managment</button></a>' : ''; ?>
         <?php echo ($logged_in_user['role_name'] ===  "Admin") ? '<a href="users-management.php"> <button class="btn"> Users Management</button></a>' : ''; ?>
 
@@ -46,8 +46,8 @@ $products = $result->fetch_all(MYSQLI_ASSOC);
             <?php foreach ($products as $product): ?>
                 <tr class="sale-row">
                     <td><?php echo  $product['product_name']; ?></td>
-                    <td> NGN <?php echo  $product['piece_price']; ?></td>
-                    <td> NGN <?php echo  $product['wrap_pack_price']; ?></td>
+                    <td> NGN <?php echo  number_format($product['piece_price'], 2); ?></td>
+                    <td> NGN <?php echo  number_format($product['wrap_pack_price'], 2); ?></td>
 
 
                 </tr>
@@ -85,7 +85,7 @@ $products = $result->fetch_all(MYSQLI_ASSOC);
                     <td><?php echo $sale['sale_id'];  ?></td>
                     <td><?php echo $sale['sold_on'];  ?></td>
                     <td><?php echo $sale['customer_name'];  ?></td>
-                    <td><?php echo $sale['payment_amount'];  ?></td>
+                    <td><?php echo number_format($sale['payment_amount'], 2);  ?></td>
 
                 </tr>
 

@@ -55,8 +55,6 @@ if (isset($_POST['submit'])) {
     $phoneErr = $phone_validation['error'];
 
 
-
-
     $password_validation = validatePassword($_POST['password1'], "Password");
     $password1 = $password_validation['value'];
     $password1Err = $password_validation['error'];
@@ -107,8 +105,8 @@ if (isset($_POST['submit'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/form.css">
-    <link rel="stylesheet" href="styles/general.css">
 
     <title>BWC Login.</title>
 </head>
@@ -121,8 +119,6 @@ if (isset($_POST['submit'])) {
                 Register
             </div>
             <div class="form-body">
-
-
 
                 <div class="form-input-ctn">
                     <Label for="username" class="form-input-label">Name </Label>

@@ -75,3 +75,13 @@ function comparePassword($password, $password_title, $password2, $password2_titl
 
     return ['value' => $value, 'error' => $error];
 }
+
+
+function array_value_sum($x, $y)
+{
+    $w = 0;
+    foreach ($x as $z) {
+        $w += $z[$y];
+    }
+    return number_format($w, 2);
+}
