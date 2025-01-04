@@ -5,16 +5,25 @@
 
 $new_password = $new_passwordErr = $confirm_password = $confirm_passwordErr = '';
 
+if(isset($_GET['page'])){
+    $page = $_GET['page'];
+}else{
+    $page = '';
+}
 
-$sql = "SELECT * FROM users";
-$result = mysqli_query($conn, $sql);
-$users = mysqli_fetch_all($result, MYSQLI_ASSOC);
+$stmt = $conn->prepare("SELECT * FROM users");
+$stmt->execute();
+$result = $stmt->get_result();
+$users = $result->fetch_all(MYSQLI_ASSOC);
 
 if (isset($_GET['id'])) {
     $user_id =  $_GET['id'];
-    $sql = "SELECT * FROM users WHERE id=$user_id";
-    $result = mysqli_query($conn, $sql);
-    $user_to_update = mysqli_fetch_assoc($result);
+    
+    $stmt = $conn->prepare("SELECT * FROM users WHERE id=?");
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $user_to_update = $result->fetch_assoc();
 
     $id = $user_to_update['id'];
     $current_password = $user_to_update['password'];
@@ -22,36 +31,43 @@ if (isset($_GET['id'])) {
 
 if (isset($_POST['submit'])) {
 
-    if (!empty($_POST['new_password'])) {
-        $new_password =  filter_input(INPUT_POST, 'new_password', FILTER_SANITIZE_SPECIAL_CHARS);
-    } else {
-        $new_passwordErr = 'New Password is required';
+    $new_password_validation = validatePassword($_POST['new_password'], "Password");
+    $new_password = $new_password_validation['value'];
+    $new_passwordErr = $new_password_validation['error'];
+
+
+    $confirm_password_validation = validatePassword($_POST['confirm_password'], "Password Confirmation");
+    $confirm_password = $confirm_password_validation['value'];
+    $confirm_passwordErr = $confirm_password_validation['error'];
+
+    if (!empty($new_password)  && !empty($confirm_password)) {
+        $password_coparison = comparePassword($new_password, 'Password', $confirm_password, 'Password confirmation');
+        $password = $password_coparison['value'];
+        $confirm_passwordErr = $password_coparison['error'];
     }
 
-    if (!empty($_POST['confirm_password'])) {
 
-        if ($_POST['new_password'] === $_POST['confirm_password']) {
-            $confirm_password =  filter_input(INPUT_POST, 'new_password', FILTER_SANITIZE_SPECIAL_CHARS);
+
+    if (!empty($password)) {
+        $stmt =  $conn->prepare("UPDATE users SET password = ? WHERE id=?");
+
+        if ($stmt) {
+            $stmt->bind_param('si', $password, $id);
+            if ($stmt->execute()) {
+                if($page === "users-management"){
+                header('Location: /bottle_water_company_project/users-management.php');
+
+                }else{
+                header('Location: /bottle_water_company_project/profile.php');
+                }
+            } else {
+                echo "Error" . $stmt->error;
+            }
         } else {
-            $confirm_passwordErr = "password and  password confirmation did'nt match'";
+            echo "Error preparing statement" . $conn->error;
         }
-    } else {
-        $confirm_passwordErr = 'Password confirmation is required';
     }
 }
-
-
-if (!empty($new_password && $confirm_password)) {
-    $sql = "UPDATE users SET password = '$confirm_password' WHERE id=$id";
-
-    if (mysqli_query($conn, $sql)) {
-        header('Location: /bottle_water_company_project/profile.php');
-    } else {
-        echo "Invalid Query: " . mysqli_query($conn, $sql);
-    }
-}
-
-
 
 
 ?>

@@ -2,26 +2,44 @@
 
 <?php
 
-if (isset($_GET['id'])) {
+if (isset($_GET['id']) && isset($_GET['page'])) {
     $id = $_GET['id'];
+    $page = $_GET['page'];
 
-    $sql = "SELECT * FROM products WHERE id=$id";
-    $result = mysqli_query($conn, $sql);
-    $product = mysqli_fetch_assoc($result);
+
+    if ($page === 'products-management') {
+        $stmt = $conn->prepare("SELECT * FROM products WHERE product_id=?");
+    } else {
+        $stmt = $conn->prepare("SELECT * FROM users WHERE id=?");
+    }
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $obj = $result->fetch_assoc();
 } else {
     header("Location: index.php");
 }
 
 if (isset($_POST['submit'])) {
-
-    $sql = "DELETE FROM products WHERE id=$id";
-
-
-    if (mysqli_query($conn, $sql)) {
-        mysqli_query($conn, $sql);
-        header('Location: products-management.php');
+    if ($page === 'products-management') {
+        $stmt = $conn->prepare("DELETE FROM products WHERE product_id=?");
     } else {
-        echo "invlaid query" . mysqli_query($conn, $sql);
+        $stmt = $conn->prepare("DELETE FROM users WHERE id=?");
+    }
+
+    if ($stmt) {
+        $stmt->bind_param("i", $id);
+        if ($stmt->execute()) {
+            if ($page === 'products-management') {
+                header('Location: products-management.php');
+            } else {
+                header('Location: users-management.php');
+            }
+        } else {
+            echo "Error  "  . $stmt->error;
+        }
+    } else {
+        echo "Error preparing statement " . $conn->error;
     }
 }
 
@@ -46,11 +64,11 @@ if (isset($_POST['submit'])) {
 
         <form action="" method="POST" class="form-ctn">
             <div class="form-header">
-                Remove <?php ?>
+                Remove <?php echo $page === "products-management" ? "Product" : 'User'; ?>
             </div>
             <div class="form-body">
 
-                <p>Are you sure you want to parmanently remove <span class="error-message"> "<?php echo $product['name']; ?>" </span>?</p>
+                <p>Are you sure you want to parmanently remove <span class="error-message"> "<?php echo ($page === 'products-management') ? $obj['product_name'] : $obj['name']; ?>" </span>?</p>
                 <br>
 
                 <div class="btns-ctn">

@@ -1,18 +1,27 @@
-<?php include "includes/header.php"; ?>
-
 <?php
+include "includes/header.php";
 
-$product = $_SESSION['product'];
-$quantity =  $_SESSION['quantity'];
+
+$product_id = $_SESSION['product_id'];
+$product_quantity =  $_SESSION['product_quantity'];
 $customer_name = $_SESSION['customer_name'];
 $customer_address = $_SESSION['customer_address'];
-$customer_contact_number = $_SESSION['customer_contact_number'];
+$customer_phone = $_SESSION['customer_contact_number'];
 $customer_email = $_SESSION['customer_email'];
 $total_price =  $_SESSION['total_price'];
 $unit_price = $_SESSION['unit_price'];
-$seller = $logged_in_user['name'];
+$seller_id = $logged_in_user['id'];
 
 
+$stmt = $conn->prepare("SELECT * FROM products WHERE product_id=?");
+$stmt->bind_param("i", $product_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$product = $result->fetch_assoc();
+$payment_amount = ($product['wrap_pack_price'] * $product_quantity);
+
+$payment_amount = sprintf("%.2f", $payment_amount);
+$product_price_at_sale_time =  sprintf("%.2f", ($product['wrap_pack_price']));
 
 
 
@@ -22,14 +31,19 @@ if (isset($_POST['submit'])) {
     $payment_method = filter_input(INPUT_POST, 'payment_method', FILTER_SANITIZE_SPECIAL_CHARS);
 
 
-    $sql = "INSERT INTO sales (product, quantity, customer_name, customer_address, customer_contact_number, customer_email, price, payment_method, seller) VALUES ('$product', '$quantity', '$customer_name', '$customer_address' , '$customer_contact_number', '$customer_email', '$total_price', '$payment_method', '$seller' )";
+    $stmt = $conn->prepare("INSERT INTO sales (customer_name, customer_email , customer_address, customer_phone, product_id ,product_quantity, product_price_at_sale_time, seller_id, payment_amount, payment_method) VALUES (?,?,?,?,?,?,?,?,?,?) ");
 
-    if (mysqli_query($conn, $sql)) {
-        header('Location: index.php');
-    } else {
-        echo "Error " . mysqli_query($conn, $sql);
+    if($stmt){
+        $stmt->bind_param("ssssiidids",$customer_name, $customer_email , $customer_address, $customer_phone, $product_id ,$product_quantity, $product_price_at_sale_time, $seller_id, $payment_amount, $payment_method );
+
+        if($stmt->execute()){
+            header(("Location: all-sales-record.php"));
+        }else{
+            echo "Error " . $stmt->error;
+        }
+    }else{
+        echo "ERROR PREPARING STATEMENT " . $conn->error;
     }
-
 
 }
 ?>
@@ -48,23 +62,28 @@ if (isset($_POST['submit'])) {
 
             <div class="payment-form-inner-info">
                 <div class="payment-inner-info-message">
-                    Product: <?php echo $product; ?>
+                    Product: <?php echo $product['product_name']; ?>
                 </div>
 
 
                 <div class="payment-inner-info-message">
-                    Unit Price: NGN <?php echo $unit_price;  ?>
+                    <div>
+                        Unit Price: NGN <?php echo $product['wrap_pack_price'];  ?>
+                    </div>
+                    <div>
+                        Quantity: <?php echo $product_quantity; ?>
+                    </div>
                 </div>
 
                 <div class="payment-inner-info-message">
-                    Total Price: NGN <?php echo $total_price; ?>
+                    Total Price: NGN <?php echo $payment_amount; ?>
                 </div>
             </div>
 
             <div class="new-sale-form-body">
                 <div class="new-sale-form-inputs-main-ctn one-field-form-inputs-main-ctn">
                     <div class="new-sale-form-input-ctn">
-                        <label class="new-sale-form-input-label" for="product">Payment Type</label>
+                        <label class="new-sale-form-input-label" for="payment_type">Payment Type</label>
                         <select type="text" class="new-sale-form-input" name="payment_method" placeholder="Enter product">
                             <option value="Back Transfer">Back Transfer</option>
                             <option value="Cash">Cash</option>

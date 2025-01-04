@@ -1,6 +1,7 @@
-<?php include('config/database.php'); ?>
+<?php 
+include('config/database.php'); 
+include('includes/functions.php'); 
 
-<?php
 
 session_start();
 
@@ -13,43 +14,33 @@ $emailErr = $passwordErr = '';
 
 
 if (isset($_POST['submit'])) {
+    $email_validation = validateInput($_POST['email'], "Email"); 
+    $email = $email_validation['value'];
+    $emailErr = $email_validation['error'];
 
-
-
-    if (!empty($_POST['email'])) {
-        $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
-    } else {
-        $emailErr = 'Email is required';
-    }
-
-
-    if (!empty($_POST['password'])) {
-        $password = $_POST['password'];
-    } else {
-        $passwordErr = 'Password is required';
-    }
-
+    $password_validation = validateInput($_POST['password'], "Password"); 
+    $password = $password_validation['value'];
+    $passwordErr = $password_validation['error'];
 
 
     if (!empty($password)  && !empty($email)) {
 
+        $stmt = $conn->prepare("SELECT * FROM users WHERE email = ?");
+        $stmt->bind_param('s', $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $user = $result->fetch_assoc();
 
-        $sql = "SELECT * FROM users WHERE email = '$email'";
-        $result = mysqli_query($conn, $sql);
-        $user = mysqli_fetch_assoc($result);
-
-        if($user){
-            if ($user['email'] === $email && $user['password'] === $password) {
-
-                $_SESSION['username'] = $user['username'];
-
-                header('Location: index.php');
-            } else {
-                $incorrect_msg = 'Incorrect email or password';
-            }
+        if($user && password_verify($password, $user['password'])){
+            session_regenerate_id(true);
+            $_SESSION['username'] = $user['username'];
+            header('Location: index.php');
+            exit(); 
         }else{
-            $emailErr = 'Account with this email does not exist';
+            $incorrect_msg = "Incorrect email or password";
         }
+
+
     }
 }
 

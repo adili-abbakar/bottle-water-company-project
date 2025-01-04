@@ -1,76 +1,56 @@
 <?php include "includes/header.php"; ?>
 
 <?php
-$product = $quantity = $customer_name = $customer_email  = $customer_contact_number =  $customer_address = '';
-$productErr = $quantityErr = $customer_nameErr = $customer_emailErr  = $customer_contact_numberErr = $customer_addressErr = '';
+$product_id = $product_quantity = $customer_name = $customer_email  = $customer_contact_number =  $customer_address = '';
+$product_idErr = $product_quantityErr = $customer_nameErr = $customer_emailErr  = $customer_contact_numberErr = $customer_addressErr = '';
 
 
-$product_sql = "SELECT * FROM products";
-$result = mysqli_query($conn, $product_sql);
-$products = mysqli_fetch_all($result, MYSQLI_ASSOC);
+$stmt = $conn->prepare("SELECT * FROM products");
+$stmt->execute();
+$result = $stmt->get_result();
+$product_ids = $result->fetch_all(MYSQLI_ASSOC);
 
 if (isset($_POST['submit'])) {
 
 
-    if (empty($_POST['product'])) {
-        $productErr = "Product is required";
-    } else {
-        $product = $_POST['product'];
-    }
+    
+    $product_id_validation = validateInput($_POST['product_id'], "Product");
+    $product_id = $product_id_validation['value'];
+    $product_idErr = $product_id_validation['error'];
 
-    if (empty($_POST['quantity'])) {
-        $quantityErr = "Quantity is required";
-    } else {
-        $quantity = $_POST['quantity'];
-    }
+    $product_quantity_validation = validateInput($_POST['product_quantity'], "Quantity");
+    $product_quantity = $product_quantity_validation['value'];
+    $product_quantityErr = $product_quantity_validation['error'];
 
+    $customer_name_validation = validateInput($_POST['customer_name'], "Customer Name");
+    $customer_name = $customer_name_validation['value'];
+    $customer_nameErr = $customer_name_validation['error'];
 
-    if (empty($_POST['customer_name'])) {
-        $customer_nameErr = "Customer Name is required";
-    } else {
-        $customer_name = $_POST['customer_name'];
-    }
-
-    if (empty($_POST['customer_email'])) {
-        $customer_emailErr = "Customer Email is required";
-    } else {
-        $customer_email = $_POST['customer_email'];
-    }
-
-    if (empty($_POST['customer_contact_number'])) {
-        $customer_contact_numberErr = "Customer Contact Number is required";
-    } else {
-        $customer_contact_number = $_POST['customer_contact_number'];
-    }
+   
+    $customer_email_validation = validateInput($_POST['customer_email'], "Customer Email");
+    $customer_email = $customer_email_validation['value'];
+    $customer_emailErr = $customer_email_validation['error'];
 
 
-    if (empty($_POST['customer_address'])) {
-        $customer_addressErr = "Customer Address is required";
-    } else {
-        $customer_address = $_POST['customer_address'];
-    }
+    $customer_contact_number_validation = validateInput($_POST['customer_contact_number'], "Customer Contact Number");
+    $customer_contact_number = $customer_contact_number_validation['value'];
+    $customer_contact_numberErr = $customer_contact_number_validation['error'];
+    
+    $customer_address_validation = validateInput($_POST['customer_address'], "Customer Address");
+    $customer_address = $customer_address_validation['value'];
+    $customer_addressErr = $customer_address_validation['error'];
+   
 
 
 
 
+    if (empty($product_idErr) && empty($product_quantityErr) && empty($customer_nameErr) && empty($customer_emailErr) && empty($customer_contact_numberErr) && empty($customer_addressErr)) {
 
-
-
-
-    if (empty($productErr) && empty($quantityErr) && empty($customer_nameErr) && empty($customer_emailErr) && empty($customer_contact_numberErr) && empty($customer_addressErr)) {
-
-        foreach ($products as $item) {
-            if ($item['name'] === $product) {
-                $unit_price = $item['price'];
-                $total_price = $unit_price * $quantity;
-                $total_price = sprintf("%.2f", $total_price);
-            }
-        }
+        
 
         $_SESSION['unit_price'] = $unit_price;
-
-        $_SESSION['product'] = $product;
-        $_SESSION['quantity'] = $quantity;
+        $_SESSION['product_id'] = $product_id;
+        $_SESSION['product_quantity'] = $product_quantity;
         $_SESSION['customer_name'] = $customer_name;
         $_SESSION['customer_address'] = $customer_address;
         $_SESSION['customer_contact_number'] = $customer_contact_number;
@@ -99,33 +79,40 @@ if (isset($_POST['submit'])) {
                 <div class="new-sale-form-inputs-main-ctn">
 
                     <div class="new-sale-form-input-ctn">
-                        <label class="new-sale-form-input-label" for="product">Product</label>
+                        <label class="new-sale-form-input-label" for="product_id">Product</label>
 
 
-                        <select type="text" class="new-sale-form-input  <?php echo $productErr ? 'err-style' : null; ?>" name="product" placeholder="Enter product">
+                        <select type="text" class="new-sale-form-input  <?php echo $product_idErr ? 'err-style' : null; ?>" name="product_id" placeholder="Enter product">
 
-                            <?php foreach ($products as $item): ?>
-                                <option value="<?php echo $item['name']; ?>"><?php echo $item['name']; ?></option>
+                            <option value="">--select product--</option>
+
+                            <?php foreach ($product_ids as $item): ?>
+                                <option value="<?php echo $item['product_id']; ?>" <?php echo ($product_id == $item['product_id']) ? 'selected' : ''; ?>>
+                                <?php echo $item['product_name']; ?>
+                            </option>
                             <?php endforeach; ?>
+
+                            
 
 
                         </select>
 
 
-                        <span class="err-message"><?php echo $productErr ? $productErr : null; ?></span>
+
+                        <span class="err-message"><?php echo $product_idErr ? $product_idErr : null; ?></span>
 
                     </div>
 
                     <div class="new-sale-form-input-ctn">
-                        <label class="new-sale-form-input-label" for="quantity">Quantity (Wrap pack)</label>
-                        <input type="number" class="new-sale-form-input <?php echo $quantityErr ? 'err-style' : null; ?> " name="quantity" value="<?php echo $quantity; ?>" placeholder="Enter quantity">
-                        <span class="err-message"><?php echo $quantityErr ? $quantityErr : null; ?></span>
+                        <label class="new-sale-form-input-label" for='product_quantity'>Quantity (Wrap pack)</label>
+                        <input type="number" class="new-sale-form-input <?php echo $product_quantityErr ? 'err-style' : null; ?> " name="product_quantity" value="<?php echo $product_quantity; ?>" placeholder="Enter quantity">
+                        <span class="err-message"><?php echo $product_quantityErr ? $product_quantityErr : null; ?></span>
 
                     </div>
 
                     <div class="new-sale-form-input-ctn">
                         <label class="new-sale-form-input-label" for="customer_name">Customer Name</label>
-                        <input type="text" class="new-sale-form-input  <?php echo $customer_nameErr ? 'errr-style' : null; ?>" name="customer_name" value="<?php echo $customer_name; ?>" placeholder="Enter Customer Name">
+                        <input type="text" class="new-sale-form-input  <?php echo $customer_nameErr ? 'err-style' : null; ?>" name="customer_name" value="<?php echo $customer_name; ?>" placeholder="Enter Customer Name">
                         <span class="err-message"><?php echo $customer_nameErr ? $customer_nameErr : null; ?></span>
 
                     </div>

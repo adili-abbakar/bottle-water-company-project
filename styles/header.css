@@ -39,12 +39,10 @@ header{
 .navigation-links a:hover{
     color: black;
     transition: 0.2s;
-    font-size: 110%;
     font-weight: 700;
 }
 
 .navigation-links a:active{
     color: black;
     transition: 0.2s;
-    font-size: 100%;
 }

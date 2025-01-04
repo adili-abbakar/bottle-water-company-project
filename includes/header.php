@@ -1,7 +1,8 @@
-<?php include 'config/database.php'; ?>
-
-
 <?php
+include 'config/database.php';
+include 'functions.php';
+
+
 session_start();
 if (!isset($_SESSION['username'])) {
 
@@ -11,18 +12,25 @@ if (!isset($_SESSION['username'])) {
 
 
     $username = $_SESSION['username'];
-    $sql = "SELECT * FROM users WHERE username = '$username' ";
-    $result = mysqli_query($conn, $sql);
-    $logged_in_user = mysqli_fetch_assoc($result);
+
+
+    $stmt = $conn->prepare("SELECT * FROM users WHERE username =? ");
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $logged_in_user = $result->fetch_assoc();
     $role_id = $logged_in_user['role_id'];
 
+
     if (!empty($role_id)) {
-        $sql = "SELECT * FROM users JOIN roles on  users.role_id = roles.id  WHERE username = '$username' ";
-        $result = mysqli_query($conn, $sql);
-        $logged_in_user = mysqli_fetch_assoc($result);
+        $stmt = $conn->prepare("SELECT * FROM users JOIN roles on  users.role_id = roles.customer_id  WHERE username =? ");
+        $stmt->bind_param("s", $username);
+        $stmt->execute();
+        $result = $stmt->get_result();
     }
-   
 }
+
+
 
 ?>
 
@@ -61,6 +69,8 @@ if (!isset($_SESSION['username'])) {
                 <a href="all-sales-record.php">Sales</a> /
                 <a href="new-sale-form.php">New Sale</a> /
                 <a href="products-management.php">Products management</a> /
+                <a href="users-management.php">Users management</a> /
+
 
                 <?php if (isset($_SESSION['username'])): ?>
                     <a href="profile.php">Profile</a>/
@@ -78,3 +88,4 @@ if (!isset($_SESSION['username'])) {
             </div>
         </div>
     </header>
+

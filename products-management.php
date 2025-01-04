@@ -1,9 +1,10 @@
 <?php include "includes/header.php"; ?>
 
 <?php
-$sql = 'SELECT *  FROM products';
-$result = mysqli_query($conn, $sql);
-$products = mysqli_fetch_all($result, MYSQLI_ASSOC);
+$stmt = $conn->prepare('SELECT *  FROM products');
+$stmt->execute();
+$result = $stmt->get_result();
+$products = $result->fetch_all(MYSQLI_ASSOC);
 ?>
 
 <div class="main-ctn">
@@ -12,11 +13,6 @@ $products = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
     <div class="dashboard-navigation-links">
         <a href="/bottle_water_company_project/products-form.php ?action=add"><button class="btn add-btn"> + New Product</button></a>
-        <a href=""><button class="btn remove-btn">Remove</button></a>
-
-
-
-
 
     </div>
 
@@ -46,15 +42,15 @@ $products = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
             <?php foreach ($products as $product): ?>
                 <tr class="sale-row" data-id="<?php echo $sale['id']; ?>">
-                    <td><?php echo  $product['name']; ?></td>
+                    <td><?php echo  $product['product_name']; ?></td>
                     <td> NGN <?php echo  $product['piece_price']; ?></td>
                     <td> NGN <?php echo  $product['wrap_pack_price']; ?></td>
 
                     <td>
                         <div class="table-btns-ctn">
-                            <a href="/bottle_water_company_project/products-form.php?id=<?php echo $product['id']; ?>&action=update"><button class="btn table-btns update-btn">Update</button></a>
+                            <a href="/bottle_water_company_project/products-form.php?id=<?php echo $product['product_id']; ?>&action=update&page=products-management"><button class="btn table-btns update-btn">Update</button></a>
 
-                            <a href="remove.php?id=<?php echo $product['id']; ?>">
+                            <a href="remove.php?id=<?php echo $product['product_id']; ?>&page=products-management">
                                 <button class="btn table-btns remove-btn">Remove</button>
                             </a>
 

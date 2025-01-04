@@ -1,36 +1,33 @@
-<?php include('includes/header.php') ?>
-
 <?php
+include('includes/header.php');
 
 
 $password = $passwordErr = '';
 
-$sql = "SELECT * FROM users";
-$result = mysqli_query($conn, $sql);
-$users = mysqli_fetch_all($result, MYSQLI_ASSOC);
-
 if (isset($_GET['id'])) {
-    $user_id =  $_GET['id'];
-    $sql = "SELECT * FROM users WHERE id=$user_id";
-    $result = mysqli_query($conn, $sql);
-    $user_to_update = mysqli_fetch_assoc($result);
+    $id = $_GET['id'];
 
-    $id = $user_to_update['id'];
-    $current_password = $user_to_update['password'];
-}
+    $stmt = $conn->prepare("SELECT * FROM users WHERE id=?");
+    $stmt->bind_param('i', $id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $user_to_update = $result->fetch_assoc();
+    $stmt->close();
 
-if (isset($_POST['submit'])) {
 
-    if (!empty($_POST['password'])) {
-        $password =  filter_input(INPUT_POST, 'password', FILTER_SANITIZE_SPECIAL_CHARS);
+    if (isset($_POST['submit'])) {
+        $password_validation = validateInput($_POST['password'], "Password");
+        $password = $password_validation['value'];
+        $passwordErr = $password_validation['error'];
+    }
 
-        if ($password === $current_password) {
-            header("Location: /bottle_water_company_project/update-password.php?id= $id");
+    if (!empty($password)) {
+        if ($user_to_update && password_verify($password, $user_to_update['password'])) {
+            header("Location: /bottle_water_company_project/update-password.php?id=$id");
+            exit();
         } else {
-            $passwordErr = 'Incorrect Password';
+            $passwordErr = "Incorrect password";
         }
-    } else {
-        $passwordErr = 'Current Password is required';
     }
 }
 

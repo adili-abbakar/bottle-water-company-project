@@ -7,15 +7,11 @@ if (isset($_SESSION['id'])) {
     $id = $_SESSION['id'];
 
 
-    $sale_deatils_sql = "SELECT * FROM sales WHERE  id = '$id' ";
-    $result = mysqli_query($conn, $sale_deatils_sql);
-    $sale = mysqli_fetch_assoc($result);
-
-    $product_name = $sale['product'];
-    // echo $name;
-    $sale_product = "SELECT * FROM products WHERE name = '$product_name' ";
-    $result = mysqli_query($conn, $sale_product);
-    $sale_product = mysqli_fetch_assoc($result);
+    $stmt = $conn->prepare("SELECT * FROM sales LEFT JOIN products on sales.product_id = products.product_id LEFT JOIN users on sales.seller_id = users.id  WHERE  sale_id = ? ");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $sale = $result->fetch_assoc();
 } else {
     echo 'Failed';
 }
@@ -35,28 +31,28 @@ if (isset($_SESSION['id'])) {
 
             <div class="sale-info">
                 <strong>Id: </strong>
-                <?php echo $sale['id']; ?>
+                <?php echo $sale['sale_id']; ?>
             </div>
 
 
             <div class="sale-info">
                 <strong>Date: </strong>
-                <?php echo $sale['date']; ?>
+                <?php echo $sale['sold_on']; ?>
 
 
             </div>
 
             <div class="sale-info">
                 <strong> Product: </strong>
-                <?php echo $sale['product']; ?>
+                <?php echo $sale['product_name']; ?>
 
 
             </div>
 
 
             <div class="sale-info">
-                <strong> Quantity: </strong>
-                <?php echo $sale['quantity']; ?>
+                <strong> Quantity (wrap pack): </strong>
+                <?php echo $sale['product_quantity']; ?>
 
 
             </div>
@@ -64,7 +60,8 @@ if (isset($_SESSION['id'])) {
             <div class="sale-info">
                 <strong> Unit Price : </strong>
 
-                NGN <?php echo $sale_product['price']; ?>
+
+                NGN <?php echo $sale['product_price_at_sale_time']; ?>
 
 
             </div>
@@ -72,7 +69,7 @@ if (isset($_SESSION['id'])) {
             <div class="sale-info">
                 <strong>Total Price : </strong>
 
-                NGN <?php echo $sale['price']; ?>
+                NGN <?php echo $sale['payment_amount']; ?>
 
 
             </div>
@@ -104,7 +101,7 @@ if (isset($_SESSION['id'])) {
             <div class="sale-info">
                 <strong> Contact Number: </strong>
 
-                <?php echo $sale['customer_contact_number']; ?>
+                <?php echo $sale['customer_phone']; ?>
 
 
             </div>
@@ -136,9 +133,9 @@ if (isset($_SESSION['id'])) {
 
 
             <div class="sale-info">
-                <strong>Amount: </strong>
+                <strong>Amount Paid: </strong>
 
-                NGN <?php echo $sale['price']; ?>
+                NGN <?php echo $sale['payment_amount']; ?>
 
 
             </div>
@@ -146,7 +143,7 @@ if (isset($_SESSION['id'])) {
             <div class="sale-info">
                 <strong> Date: </strong>
 
-                <?php echo $sale['date']; ?>
+                <?php echo $sale['sold_on']; ?>
 
 
             </div>

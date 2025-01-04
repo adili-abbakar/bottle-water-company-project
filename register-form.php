@@ -1,7 +1,8 @@
-<?php include('config/database.php'); ?>
-
-
 <?php
+include('config/database.php');
+include('includes/functions.php');
+
+
 
 session_start();
 
@@ -13,112 +14,87 @@ if (isset($_SESSION['username'])) {
 $name = $username =  $email = $password1 = $password2 = $phone = $address = '';
 $nameErr = $usernameErr =  $emailErr = $password1Err = $password2Err = $phoneErr = $addressErr =  '';
 
-$sql = "SELECT * FROM users";
-$result = mysqli_query($conn, $sql);
-$users = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+$stmt = $conn->prepare("SELECT * FROM users");
+$stmt->execute();
+$result = $stmt->get_result();
+$users = $result->fetch_all(MYSQLI_ASSOC);
 
 
 if (isset($_POST['submit'])) {
 
 
-    if (!empty($_POST['name'])) {
-        $name  = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_SPECIAL_CHARS);
-    } else {
-        $nameErr = 'Name is required';
+
+    $name_validation = validateInput($_POST['name'], "Name");
+    $name = $name_validation['value'];
+    $nameErr = $name_validation['error'];
+
+
+    $username_validation = validateInput($_POST['username'], "Username", true, $users);
+    $username = $username_validation['value'];
+    $usernameErr = $username_validation['error'];
+
+
+    $email_validation = validateInput($_POST['email'], "Email", true, $users);
+    $email = $email_validation['value'];
+    $emailErr = $email_validation['error'];
+
+    $password_validation = validatePassword($_POST['password1'], "Password");
+    $password1 = $password_validation['value'];
+    $password1Err = $password_validation['error'];
+
+  
+
+    $address_validation = validateInput($_POST['address'], "Address");
+    $address = $address_validation['value'];
+    $addressErr = $address_validation['error'];
+
+
+    $phone_validation = validateInput($_POST['phone'], "Phone Number");
+    $phone = $phone_validation['value'];
+    $phoneErr = $phone_validation['error'];
+
+
+
+
+    $password_validation = validatePassword($_POST['password1'], "Password");
+    $password1 = $password_validation['value'];
+    $password1Err = $password_validation['error'];
+
+
+    $password_validation = validatePassword($_POST['password2'], "Password Confirmation");
+    $password2 = $password_validation['value'];
+    $password2Err = $password_validation['error'];
+
+    if (!empty($password1)  && !empty($password2)) {
+        $password_coparison = comparePassword($password1, 'Password', $password2, 'Password confirmation');
+        $password = $password_coparison['value'];
+        $password2Err = $password_coparison['error'];
     }
 
 
-    if (!empty($_POST['username'])) {
-        if (count($users) > 0) {
-            foreach ($users as $user) {
-                if ($user['username'] === $_POST['username']) {
-                    $usernameErr = 'Username is already taken, Use diffrent one';
-                } else {
-                    $username  = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_SPECIAL_CHARS);
-                }
+
+ 
+    if (!empty($name) &&  !empty($username) &&  !empty($email) &&  !empty($address) &&  !empty($phone) &&  !empty($password)) {
+
+
+        $stmt =  $conn->prepare("INSERT INTO users (name, username, email, address, phone, password) VALUES (?,?,?,?,?,?)");
+
+        if ($stmt) {
+            $stmt->bind_param("ssssss", $name, $username, $email, $address, $phone, $password);
+
+
+            if ($stmt->execute()) {
+                $_SESSION['username'] = $username;
+                header('Location: index.php');
+                exit();
+            } else {
+                echo "Error" . $stmt->error;
             }
+
+            $stmt->close();
         } else {
-            $username =
-                filter_input(INPUT_POST, 'username', FILTER_SANITIZE_SPECIAL_CHARS);
-        }
-    } else {
-        $usernameErr = 'Username is required';
-    }
-
-    if (!empty($_POST['email'])) {
-        if (count($users) > 0) {
-            foreach ($users as $user) {
-                if ($user['email'] === $_POST['email']) {
-                    $emailErr = 'Email is already taken, Use diffrent one';
-                } else {
-                    $email  = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
-                }
-            }
-        } else {
-            $email =
-                filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
-        }
-    } else {
-        $emailErr = 'Email is required';
-    }
-
-    if (!empty($_POST['address'])) {
-        $address  = filter_input(INPUT_POST, 'address', FILTER_SANITIZE_SPECIAL_CHARS);
-    } else {
-        $addressErr = 'Address is required';
-    }
-
-    if (!empty($_POST['phone'])) {
-        $phone = filter_input(INPUT_POST, 'phone', FILTER_SANITIZE_SPECIAL_CHARS);
-        $phone_number = $_POST['phone'];
-
-
-        $number_lenght =  strlen($phone_number);
-
-        if($number_lenght > 12){
-            $phoneErr = "Phone number must not exceed 12 numbers";
-        }else{
-            $phone = filter_input(INPUT_POST, 'phone', FILTER_SANITIZE_SPECIAL_CHARS);
-        }
-
-    } else {
-        $phoneErr = 'Phone number is required';
-    }
-
-
-    if (!empty($_POST['password1'])) {
-        $password1  = $_POST['password1'];
-    } else {
-        $password1Err = 'Password is required';
-    }
-
-    if (!empty($_POST['password2'])) {
-        if ($_POST['password2'] === $_POST['password1']) {
-            $password2  = $_POST['password2'];
-        } else {
-            $password2Err = "Password and password confirmation didn't match";
-        }
-    } else {
-        $password2Err = 'Password is required';
-    }
-
-
-
-
-
-
-    if (!empty($name) &&  !empty($username) &&  !empty($email) &&  !empty($address) &&  !empty($phone) &&  !empty($password1) &&  !empty($password2)) {
-
-        $sql = "INSERT INTO users (name, username, email, address, phone, password) VALUES ('$name', '$username', '$email', '$address', '$phone', '$password1')";
-
-
-        if (mysqli_query($conn, $sql)) {
-
-            $_SESSION['username'] = $username;
-
-            header('Location: index.php');
-        } else {
-            echo "Error " . mysqli_query($conn, $sql);
+            echo "Error preparing the statement: " . $conn->error;
         }
     }
 }
@@ -173,7 +149,7 @@ if (isset($_POST['submit'])) {
 
                 <div class="form-input-ctn">
                     <Label for="phone" class="form-input-label">Phone Number </Label>
-                    <input maxlenght="15" type="number" name="phone" class="form-input ><?php echo $phoneErr ? 'err-style' : null; ?>" placeholder=" Enter Phone Number" value="<?php echo $phone; ?>">
+                    <input maxlenght="15" type="number" name="phone" class="form-input <?php echo $phoneErr ? 'err-style' : null; ?>" placeholder=" Enter Phone Number" value="<?php echo $phone; ?>">
                     <span class=" err-message"><?php echo $phoneErr ? $phoneErr : null; ?></span>
 
                 </div>

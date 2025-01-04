@@ -29,11 +29,13 @@
 
 .table tr:hover {
     transition: 0.2s;
-    opacity: 0.7;
     cursor: pointer;
-    font-size: 110%;
+    background-color: var(--primary-color);
 }
 
+tr:hover  button{
+    background-color: var(--secondary-color);
+} 
 
 
 .dashboard-products-ctn{

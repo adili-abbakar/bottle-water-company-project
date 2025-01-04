@@ -3,9 +3,10 @@
     --mid-color: rgb(233, 233, 233);
     --secondary-color: rgb(248, 248, 248);
   
-    --error-color: rgb(252, 27, 11);
-    --color-success: #5dd693;
-    --color-update: #fac61c;
+    --error-color: red;
+    --color-success: green;
+    --color-update: orange;
+    --color-detail: rgb(76, 76, 255);
 
   
   }
@@ -83,7 +84,7 @@ body{
     opacity: 0.8;
     cursor: pointer;
     transition: 0.2s;
-    padding: 7px 18px;
+    /* padding: 7px; */
 }
 
 .btn:active{
@@ -107,6 +108,12 @@ body{
     background-color: var(--color-update);
     opacity: 1;
 }
+
+.detail-btn:hover{
+    background-color: var(--color-detail);
+    opacity: 1;
+}
+
 
 
 .error-message{
