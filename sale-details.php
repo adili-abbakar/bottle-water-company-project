@@ -1,19 +1,22 @@
-<?php include "includes/header.php"; ?>
+<?php include "includes/header.php";
 
-<?php
+if ($logged_in_user['role_name'] ===  "Admin" || $logged_in_user['role_name'] === "Accountant" || $logged_in_user['role_name'] ===  "Sale Agent")  {
+    if (isset($_SESSION['id'])) {
 
-if (isset($_SESSION['id'])) {
-
-    $id = $_SESSION['id'];
+        $id = $_SESSION['id'];
 
 
-    $stmt = $conn->prepare("SELECT * FROM sales LEFT JOIN products on sales.product_id = products.product_id LEFT JOIN users on sales.seller_id = users.id  WHERE  sale_id = ? ");
-    $stmt->bind_param("i", $id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $sale = $result->fetch_assoc();
+        $stmt = $conn->prepare("SELECT * FROM sales LEFT JOIN products on sales.product_id = products.product_id LEFT JOIN users on sales.seller_id = users.id  WHERE  sale_id = ? ");
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $sale = $result->fetch_assoc();
+    } else {
+        echo 'Failed';
+    }
 } else {
-    echo 'Failed';
+
+    header("Location: restriction-page.php");
 }
 ?>
 
@@ -32,6 +35,12 @@ if (isset($_SESSION['id'])) {
             <div class="sale-info">
                 <strong>Id: </strong>
                 <?php echo $sale['sale_id']; ?>
+            </div>
+
+
+            <div class="sale-info">
+                <strong>Sold by: </strong>
+                <?php echo $sale['name']; ?>
             </div>
 
 

@@ -1,33 +1,36 @@
 <?php
+
 include('includes/header.php');
 
-$id = $name = $username =  $email = $phone = $address = $password1 = $password2 = $role_id = '';
-$nameErr = $usernameErr =  $emailErr  = $phoneErr = $addressErr = $password1Err = $password2Err = $role_idErr = '';
+if ($logged_in_user['role_name']  === "Admin") {
 
 
 
-$stmt = $conn->prepare("SELECT * FROM roles");
-$stmt->execute();
-$result = $stmt->get_result();
-$roles  = $result->fetch_all(MYSQLI_ASSOC);
-$stmt->close();
+    $id = $name = $username =  $email = $phone = $address = $password1 = $password2 = $role_id = '';
+    $nameErr = $usernameErr =  $emailErr  = $phoneErr = $addressErr = $password1Err = $password2Err = $role_idErr = '';
 
 
 
-
-if (isset($_GET['action']) && isset($_GET['page'])) {
-
-    $action = $_GET['action'];
-    $page = $_GET['page'];
-
-
-    $stmt = $conn->prepare("SELECT * FROM users join roles on users.role_id = roles.customer_id");
+    $stmt = $conn->prepare("SELECT * FROM roles");
     $stmt->execute();
     $result = $stmt->get_result();
-    $users = $result->fetch_all(MYSQLI_ASSOC);
+    $roles  = $result->fetch_all(MYSQLI_ASSOC);
     $stmt->close();
 
-    if ($action === "update") {
+
+
+
+    if (isset($_GET['action']) && isset($_GET['page'])) {
+
+        $action = $_GET['action'];
+        $page = $_GET['page'];
+
+
+        $stmt = $conn->prepare("SELECT * FROM users join roles on users.role_id = roles.customer_id");
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $users = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
 
 
 
@@ -40,6 +43,13 @@ if (isset($_GET['action']) && isset($_GET['page'])) {
             $user_to_update = $result->fetch_assoc();
             $stmt->close();
 
+            $stmt = $conn->prepare("SELECT * FROM users");
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $users = $result->fetch_all(MYSQLI_ASSOC);
+            $stmt->close();
+
+
 
             $id = $user_to_update['id'];
             $name = $user_to_update['name'];
@@ -49,259 +59,117 @@ if (isset($_GET['action']) && isset($_GET['page'])) {
             $address = $user_to_update['address'];
             $role_id = $user_to_update['role_id'];
         }
-
         if (isset($_POST['submit'])) {
+            $name_valdation = validateInput(($_POST['name']), "Name");
+            $name = $name_valdation['value'];
+            $nameErr = $name_valdation['error'];
 
 
 
-            if (!empty($_POST['name'])) {
-                $name  = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_SPECIAL_CHARS);
-            } else {
-                $nameErr = 'Name is required';
-                $name = '';
-            }
+            $address_valdation = validateInput(($_POST['address']), "Address");
+            $address = $address_valdation['value'];
+            $addressErr = $address_valdation['error'];
+
+            $phone_valdation = validateInput(($_POST['phone']), "Phone");
+            $phone = $phone_valdation['value'];
+            $phoneErr = $phone_valdation['error'];
+
+            $role_id_valdation = validateInput(($_POST['role_id']), "Role");
+            $role_id = $role_id_valdation['value'];
+            $role_idErr = $role_id_valdation['error'];
 
 
-            if (!empty($_POST['username'])) {
 
-                if ($_POST['username'] !== $username) {
+            $password1_valdation = validatePassword(($_POST['password1']), "Password");
+            $password1 = $password1_valdation['value'];
+            $password1Err = $password1_valdation['error'];
 
-                    if (count($users) > 0) {
-                        foreach ($users as $user) {
-                            if ($user['username'] === $_POST['username']) {
-                                $usernameErr = 'Username is already taken, Use diffrent one';
+            $password2_valdation = validatePassword(($_POST['password2']), "Password Confirmatino");
+            $password2 = $password2_valdation['value'];
+            $password2Err = $password2_valdation['error'];
+
+            if ($action === "update") {
+
+                $username_valdation = validateInput(($_POST['username']), "Username");
+                $username = $username_valdation['value'];
+                $usernameErr = $username_valdation['error'];
+
+                $email_valdation = validateInput(($_POST['email']), "Email",);
+                $email = $email_valdation['value'];
+                $emailErr = $email_valdation['error'];
+
+                if (empty($nameErr) && empty($usernameErr) && empty($emailErr) && empty($addressErr) && empty($phoneErr) && empty($role_idErr)) {
+
+
+                    $stmt = $conn->prepare("UPDATE users SET name = ?, email=?, username=?, address=?, phone=?, role_id=? WHERE id=? ");
+
+                    if ($stmt) {
+                        $stmt->bind_param("sssssii", $name, $email, $username, $address, $phone, $role_id, $id);
+
+                        if ($stmt->execute()) {
+                            if ($page === 'users-management') {
+                                header('Location: users-management.php');
                             } else {
-                                $username  = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_SPECIAL_CHARS);
+                                header('Location: profile.php');
                             }
-                        }
-                    } else {
-                        $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_SPECIAL_CHARS);
-                    }
-                } else {
-                    $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_SPECIAL_CHARS);
-                }
-            } else {
-                $usernameErr = 'Username is required';
-                $username = '';
-            }
-
-            if (!empty($_POST['email'])) {
-                if ($_POST['email'] !== $email) {
-                    if (count($users) > 0) {
-                        foreach ($users as $user) {
-                            if ($user['email'] === $_POST['email']) {
-                                $emailErr = 'Email is already taken, Use diffrent one';
-                            } else {
-                                $email  = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
-                            }
-                        }
-                    } else {
-                        $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
-                    }
-                } else {
-                    $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
-                }
-            } else {
-                $emailErr = 'Email is required';
-                $email = '';
-            }
-
-            if (!empty($_POST['address'])) {
-                $address  = filter_input(INPUT_POST, 'address', FILTER_SANITIZE_SPECIAL_CHARS);
-            } else {
-                $addressErr = 'Address is required';
-                $address = '';
-            }
-
-            if (!empty($_POST['phone'])) {
-                $phone = filter_input(INPUT_POST, 'phone', FILTER_SANITIZE_SPECIAL_CHARS);
-
-                $phone_number = $_POST['phone'];
-                $number_lenght =  strlen($phone_number);
-
-                if ($number_lenght > 12) {
-                    $phoneErr = "Phone number must not exceed 12 numbers";
-                } else {
-                    $phone = filter_input(INPUT_POST, 'phone', FILTER_SANITIZE_SPECIAL_CHARS);
-                }
-            } else {
-                $phoneErr = 'Phone number is required';
-                $phone = '';
-            }
-
-            if (!empty($_POST['role_id'])) {
-                $role_id = filter_input(INPUT_POST, 'role_id', FILTER_SANITIZE_NUMBER_INT);
-            } else {
-                $role_idErr = "Role is required";
-                $role_id = '';
-            }
-
-
-
-            if (empty($nameErr) && empty($usernameErr) && empty($emailErr) && empty($addressErr) && empty($phoneErr) && empty($role_idErr)) {
-
-
-                $stmt = $conn->prepare("UPDATE users SET name = ?, email=?, username=?, address=?, phone=?, role_id=? WHERE id=? ");
-
-                if ($stmt) {
-                    $stmt->bind_param("sssssii", $name, $email, $username, $address, $phone, $role_id, $id);
-
-                    if ($stmt->execute()) {
-                        if ($page === 'users-management') {
-                            header('Location: users-management.php');
                         } else {
-                            header('Location: profile.php');
+                            echo "Error: " . $stmt->error;
                         }
                     } else {
-                        echo "Error: " . $stmt->error;
+                        echo "Error Prepareing the statement" . $conn->error;
                     }
-                } else {
-                    echo "Error Prepareing the statement" . $conn->error;
+                }
+            } else {
+                $username_valdation = validateInput(($_POST['username']), "Username", true, $users);
+                $username = $username_valdation['value'];
+                $usernameErr = $username_valdation['error'];
+
+                $email_valdation = validateInput(($_POST['email']), "Email", true, $users);
+                $email = $email_valdation['value'];
+                $emailErr = $email_valdation['error'];
+
+                $password1_valdation = validatePassword(($_POST['password1']), "Password");
+                $password1 = $password1_valdation['value'];
+                $password1Err = $password1_valdation['error'];
+
+                $password2_valdation = validatePassword(($_POST['password2']), "Password Confirmatino");
+                $password2 = $password2_valdation['value'];
+                $password2Err = $password2_valdation['error'];
+
+                if (!empty($password1) && !empty($password2)) {
+                    $hashed_password_validation =  comparePassword($password1, 'Password', $password2, 'Password Confirmaion');
+                    $hashed_password = $hashed_password_validation['value'];
+                    $password2Err = $hashed_password_validation['error'];
+                }
+
+                if (empty($nameErr) && empty($usernameErr) && empty($emailErr) && empty($addressErr) && empty($phoneErr) && empty($role_idErr) && !empty($hashed_password)) {
+
+                    $stmt = $conn->prepare("INSERT INTO users (name, username, email, phone, address, role_id, password) VALUES (?,?,?,?,?,?,?)");
+
+                    if ($stmt) {
+                        $stmt->bind_param('sssssis', $name, $username,  $email, $phone, $address, $role_id, $hashed_password);
+
+                        if ($stmt->execute()) {
+                            if ($page === 'users-management') {
+                                header('Location: users-management.php');
+                            } else {
+                                header('Location: profile.php');
+                            }
+                        } else {
+                            echo "Error " . $stmt->error;
+                        }
+                    } else {
+                        echo "Error Preparing statement" . $conn->error;
+                    }
                 }
             }
         }
     } else {
-
-
-        if (isset($_POST['submit'])) {
-
-
-
-            if (!empty($_POST['name'])) {
-                $name  = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_SPECIAL_CHARS);
-            } else {
-                $nameErr = 'Name is required';
-                $name = '';
-            }
-
-
-            if (!empty($_POST['username'])) {
-
-                if ($_POST['username'] !== $username) {
-
-                    if (count($users) > 0) {
-                        foreach ($users as $user) {
-                            if ($user['username'] === $_POST['username']) {
-                                $usernameErr = 'Username is already taken, Use diffrent one';
-                            } else {
-                                $username  = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_SPECIAL_CHARS);
-                            }
-                        }
-                    } else {
-                        $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_SPECIAL_CHARS);
-                    }
-                } else {
-                    $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_SPECIAL_CHARS);
-                }
-            } else {
-                $usernameErr = 'Username is required';
-                $username = '';
-            }
-
-            if (!empty($_POST['email'])) {
-                if ($_POST['email'] !== $email) {
-                    if (count($users) > 0) {
-                        foreach ($users as $user) {
-                            if ($user['email'] === $_POST['email']) {
-                                $emailErr = 'Email is already taken, Use diffrent one';
-                            } else {
-                                $email  = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
-                            }
-                        }
-                    } else {
-                        $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
-                    }
-                } else {
-                    $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
-                }
-            } else {
-                $emailErr = 'Email is required';
-                $email = '';
-            }
-
-            if (!empty($_POST['address'])) {
-                $address  = filter_input(INPUT_POST, 'address', FILTER_SANITIZE_SPECIAL_CHARS);
-            } else {
-                $addressErr = 'Address is required';
-                $address = '';
-            }
-
-            if (!empty($_POST['phone'])) {
-                $phone = filter_input(INPUT_POST, 'phone', FILTER_SANITIZE_SPECIAL_CHARS);
-
-                $phone_number = $_POST['phone'];
-                $number_lenght =  strlen($phone_number);
-
-                if ($number_lenght > 12) {
-                    $phoneErr = "Phone number must not exceed 12 numbers";
-                } else {
-                    $phone = filter_input(INPUT_POST, 'phone', FILTER_SANITIZE_SPECIAL_CHARS);
-                }
-            } else {
-                $phoneErr = 'Phone number is required';
-                $phone = '';
-            }
-
-            if (!empty($_POST['role_id'])) {
-                $role_id = filter_input(INPUT_POST, 'role_id', FILTER_SANITIZE_NUMBER_INT);
-            } else {
-                $role_idErr = "Role is required";
-            }
-
-
-            if (!empty($_POST['password1'])) {
-                if (strlen($_POST['password1']) >= 8) {
-                    $password1 = $_POST['password1'];
-                } else {
-                    $password1Err = "Password must be at least 8 characters";
-                }
-            } else {
-                $password1Err = "Password is required";
-            }
-
-            if (!empty($_POST['password2'])) {
-                if (strlen($_POST['password2']) >= 8) {
-                    $password2 = $_POST['password2'];
-                    if ($password1 === $password2) {
-                        $hashed_password = password_hash($password1, PASSWORD_DEFAULT);
-                    } else {
-                        $password2Err = "Password and Password confirmation did not match";
-                    }
-                } else {
-                    $password2Err = "Password  must be at least 8 characters";
-                }
-            } else {
-                $password2Err = "Password confirmation is required";
-            }
-
-
-
-
-            if (empty($nameErr) && empty($usernameErr) && empty($emailErr) && empty($addressErr) && empty($phoneErr) && !empty($hashed_password)) {
-
-                $stmt = $conn->prepare("INSERT INTO users (name, username, email, phone, address, password) VALUES (?,?,?,?,?,?)");
-
-                if ($stmt) {
-                    $stmt->bind_param('ssssss', $name, $username,  $email, $phone, $address, $hashed_password);
-
-                    if ($stmt->execute()) {
-                        if ($page === 'users-management') {
-                            header('Location: users-management.php');
-                        } else {
-                            header('Location: profile.php');
-                        }
-                    } else {
-                        echo "Error " . $stmt->error;
-                    }
-                } else {
-                    echo "Error Preparing statement" . $conn->error;
-                }
-            }
-        }
+        header('Location: index.php');
     }
+} else {
+    header('Location: restriction-page.php');
 }
-
-
 ?>
 
 
@@ -409,7 +277,7 @@ if (isset($_GET['action']) && isset($_GET['page'])) {
                         <input type="submit" name="submit" class="new-sale-form-submit btn" value="Create">
                     <?php else: ?>
                         <input type="submit" name="submit" class="new-sale-form-submit btn" value="Update">
-                    <?php endif ?>
+                    <?php endif; ?>
                 </div>
 
 
@@ -421,4 +289,5 @@ if (isset($_GET['action']) && isset($_GET['page'])) {
 
 </div>
 
-<?php include 'includes/footer.php'; ?>
+
+<?php include "includes/footer.php"; ?>

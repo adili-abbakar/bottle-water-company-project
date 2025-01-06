@@ -1,11 +1,19 @@
 <?php
 include "includes/header.php";
 
+if ($logged_in_user['role_name'] ===  "Admin" || $logged_in_user['role_name'] === "Accountant" || $logged_in_user['role_name'] ===  "Sale Agent")  {
+
+
 $stmt = $conn->prepare("SELECT * FROM sales ORDER BY sale_id DESC");
 $stmt->execute();
 $result = $stmt->get_result();
 $sales = $result->fetch_all(MYSQLI_ASSOC);
 
+
+}else{
+    header("Location: restriction-page.php");
+
+}
 ?>
 
 <div class="main-ctn">

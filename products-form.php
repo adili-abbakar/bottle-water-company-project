@@ -1,6 +1,8 @@
 <?php
 include('includes/header.php');
 
+if ($logged_in_user['role_name'] ===  "Admin" || $logged_in_user['role_name'] === "Inventory Manager") {
+
 $product_name = $product_nameErr = $piece_price = $piece_priceErr = $wrap_pack_price = $wrap_pack_priceErr =  '';
 
 
@@ -79,7 +81,10 @@ if ($_GET['action'] === "add") {
     }
 }
 
+}else{
+    header("Location: restriction-page.php");
 
+}
 
 ?>
 

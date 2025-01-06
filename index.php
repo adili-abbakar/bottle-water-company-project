@@ -17,16 +17,14 @@ $products = $result->fetch_all(MYSQLI_ASSOC);
     <h2 class="main-title">Dashboard</h2>
 
     <div class="dashboard-navigation-links">
-        <a href="new-sale-form.php "><button class="btn"> + New Sale</button></a>
-        <a href="all-sales-record.php"> <button class="btn"> All Sales Record</button></a>
-        <a href="products-management.php"> <button class="btn"> Products Managment</button></a>
-        <a href="users-management.php"> <button class="btn"> Users Management</button></a>
 
-
+        <?php echo ($logged_in_user['role_name'] ===  "Admin" || $logged_in_user['role_name'] ===  "Sale Agent" ) ? '<a href="new-sale-form.php "><button class="btn"> + New Sale</button></a>' : ''; ?>
+        <?php echo ($logged_in_user['role_name'] ===  "Admin" 
+        || $logged_in_user['role_name'] ===  "Accountant" || $logged_in_user['role_name'] ===  "Sale Agent") ? '<a href="all-sales-record.php"> <button class="btn"> All Sales Record</button></a>' : ''; ?>
+        <?php echo ($logged_in_user['role_name'] ===  "Admin" || $logged_in_user['role_name'] ===  "Inventory Manager") ? '<a href="products-management.php"> <button class="btn"> Products Managment</button></a>' : ''; ?>
+        <?php echo ($logged_in_user['role_name'] ===  "Admin") ? '<a href="users-management.php"> <button class="btn"> Users Management</button></a>' : ''; ?>
 
     </div>
-
-
 
     <div class="dashboard-recent-sale-ctn">
 

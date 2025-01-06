@@ -14,7 +14,7 @@ if (!isset($_SESSION['username'])) {
     $username = $_SESSION['username'];
 
 
-    $stmt = $conn->prepare("SELECT * FROM users WHERE username =? ");
+    $stmt = $conn->prepare("SELECT * FROM users left join roles on users.role_id = customer_id WHERE username =? ");
     $stmt->bind_param("s", $username);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -66,10 +66,12 @@ if (!isset($_SESSION['username'])) {
 
             <div class="navigation-links">
                 <a href="index.php">Home</a> /
-                <a href="all-sales-record.php">Sales</a> /
-                <a href="new-sale-form.php">New Sale</a> /
-                <a href="products-management.php">Products management</a> /
-                <a href="users-management.php">Users management</a> /
+                <?php echo ($logged_in_user['role_name'] ===  "Admin" || $logged_in_user['role_name'] === "Accountant" || $logged_in_user['role_name'] ===  "Sale Agent")  ? "<a href='all-sales-record.php'>Sales</a> /" : null;  ?>
+                <?php echo ($logged_in_user['role_name'] ===  "Admin" || $logged_in_user['role_name'] === "Sale Agent") ? "<a href='new-sale-form.php'>New Sale</a> /" : null;  ?>
+                <?php echo ($logged_in_user['role_name'] ===  "Admin" || $logged_in_user['role_name'] === "Inventory Manager") ? "<a href='products-management.php'>Products management</a> /" : null;  ?>
+
+                <?php echo ($logged_in_user['role_name'] ===  "Admin") ? "<a href='users-management.php'>Users management</a> /" : null;  ?>
+                
 
 
                 <?php if (isset($_SESSION['username'])): ?>

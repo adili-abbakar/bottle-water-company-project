@@ -1,6 +1,6 @@
 <?php
 include "includes/header.php";
-
+if ($logged_in_user['role_name'] ===  "Admin" || $logged_in_user['role_name'] === "Sale Agent") {
 
 $product_id = $_SESSION['product_id'];
 $product_quantity =  $_SESSION['product_quantity'];
@@ -46,6 +46,12 @@ if (isset($_POST['submit'])) {
     }
 
 }
+
+}else{
+    header("Location: restriction-page.php");
+
+}
+
 ?>
 
 

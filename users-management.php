@@ -1,12 +1,18 @@
-<?php include "includes/header.php"; ?>
-
 <?php
+ include "includes/header.php"; 
+
+ if($logged_in_user['role_name'] === "Admin"){
+    
+
+
 $stmt = $conn->prepare('SELECT *  FROM users left JOIN roles on users.role_id = roles.customer_id');
 $stmt->execute();
 $result = $stmt->get_result();
 $users = $result->fetch_all(MYSQLI_ASSOC);
 
-
+}else{
+    header("Location: restriction-page.php");
+}
 ?>
 
 <div class="main-ctn">

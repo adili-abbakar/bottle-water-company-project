@@ -1,64 +1,69 @@
-<?php include "includes/header.php"; ?>
-
 <?php
-$product_id = $product_quantity = $customer_name = $customer_email  = $customer_contact_number =  $customer_address = '';
-$product_idErr = $product_quantityErr = $customer_nameErr = $customer_emailErr  = $customer_contact_numberErr = $customer_addressErr = '';
+include "includes/header.php";
+
+if ($logged_in_user['role_name'] ===  "Admin" || $logged_in_user['role_name'] === "Sale Agent") {
+
+    $product_id = $product_quantity = $customer_name = $customer_email  = $customer_contact_number =  $customer_address = '';
+    $product_idErr = $product_quantityErr = $customer_nameErr = $customer_emailErr  = $customer_contact_numberErr = $customer_addressErr = '';
 
 
-$stmt = $conn->prepare("SELECT * FROM products");
-$stmt->execute();
-$result = $stmt->get_result();
-$product_ids = $result->fetch_all(MYSQLI_ASSOC);
+    $stmt = $conn->prepare("SELECT * FROM products");
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $product_ids = $result->fetch_all(MYSQLI_ASSOC);
 
-if (isset($_POST['submit'])) {
-
-
-    
-    $product_id_validation = validateInput($_POST['product_id'], "Product");
-    $product_id = $product_id_validation['value'];
-    $product_idErr = $product_id_validation['error'];
-
-    $product_quantity_validation = validateInput($_POST['product_quantity'], "Quantity");
-    $product_quantity = $product_quantity_validation['value'];
-    $product_quantityErr = $product_quantity_validation['error'];
-
-    $customer_name_validation = validateInput($_POST['customer_name'], "Customer Name");
-    $customer_name = $customer_name_validation['value'];
-    $customer_nameErr = $customer_name_validation['error'];
-
-   
-    $customer_email_validation = validateInput($_POST['customer_email'], "Customer Email");
-    $customer_email = $customer_email_validation['value'];
-    $customer_emailErr = $customer_email_validation['error'];
-
-
-    $customer_contact_number_validation = validateInput($_POST['customer_contact_number'], "Customer Contact Number");
-    $customer_contact_number = $customer_contact_number_validation['value'];
-    $customer_contact_numberErr = $customer_contact_number_validation['error'];
-    
-    $customer_address_validation = validateInput($_POST['customer_address'], "Customer Address");
-    $customer_address = $customer_address_validation['value'];
-    $customer_addressErr = $customer_address_validation['error'];
-   
+    if (isset($_POST['submit'])) {
 
 
 
+        $product_id_validation = validateInput($_POST['product_id'], "Product");
+        $product_id = $product_id_validation['value'];
+        $product_idErr = $product_id_validation['error'];
 
-    if (empty($product_idErr) && empty($product_quantityErr) && empty($customer_nameErr) && empty($customer_emailErr) && empty($customer_contact_numberErr) && empty($customer_addressErr)) {
+        $product_quantity_validation = validateInput($_POST['product_quantity'], "Quantity");
+        $product_quantity = $product_quantity_validation['value'];
+        $product_quantityErr = $product_quantity_validation['error'];
 
-        
+        $customer_name_validation = validateInput($_POST['customer_name'], "Customer Name");
+        $customer_name = $customer_name_validation['value'];
+        $customer_nameErr = $customer_name_validation['error'];
 
-        $_SESSION['unit_price'] = $unit_price;
-        $_SESSION['product_id'] = $product_id;
-        $_SESSION['product_quantity'] = $product_quantity;
-        $_SESSION['customer_name'] = $customer_name;
-        $_SESSION['customer_address'] = $customer_address;
-        $_SESSION['customer_contact_number'] = $customer_contact_number;
-        $_SESSION['customer_email'] = $customer_email;
-        $_SESSION['total_price'] = $total_price;
 
-        header('Location: payment-form.php');
+        $customer_email_validation = validateInput($_POST['customer_email'], "Customer Email");
+        $customer_email = $customer_email_validation['value'];
+        $customer_emailErr = $customer_email_validation['error'];
+
+
+        $customer_contact_number_validation = validateInput($_POST['customer_contact_number'], "Customer Contact Number");
+        $customer_contact_number = $customer_contact_number_validation['value'];
+        $customer_contact_numberErr = $customer_contact_number_validation['error'];
+
+        $customer_address_validation = validateInput($_POST['customer_address'], "Customer Address");
+        $customer_address = $customer_address_validation['value'];
+        $customer_addressErr = $customer_address_validation['error'];
+
+
+
+
+
+        if (empty($product_idErr) && empty($product_quantityErr) && empty($customer_nameErr) && empty($customer_emailErr) && empty($customer_contact_numberErr) && empty($customer_addressErr)) {
+
+
+
+            $_SESSION['unit_price'] = $unit_price;
+            $_SESSION['product_id'] = $product_id;
+            $_SESSION['product_quantity'] = $product_quantity;
+            $_SESSION['customer_name'] = $customer_name;
+            $_SESSION['customer_address'] = $customer_address;
+            $_SESSION['customer_contact_number'] = $customer_contact_number;
+            $_SESSION['customer_email'] = $customer_email;
+            $_SESSION['total_price'] = $total_price;
+
+            header('Location: payment-form.php');
+        }
     }
+} else {
+    header("Location: restriction-page.php");
 }
 
 ?>
@@ -88,11 +93,11 @@ if (isset($_POST['submit'])) {
 
                             <?php foreach ($product_ids as $item): ?>
                                 <option value="<?php echo $item['product_id']; ?>" <?php echo ($product_id == $item['product_id']) ? 'selected' : ''; ?>>
-                                <?php echo $item['product_name']; ?>
-                            </option>
+                                    <?php echo $item['product_name']; ?>
+                                </option>
                             <?php endforeach; ?>
 
-                            
+
 
 
                         </select>
