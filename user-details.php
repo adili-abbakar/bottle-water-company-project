@@ -5,7 +5,7 @@ if (isset($_GET['id'])) {
     $id = $_GET['id'];
 
 
-    $stmt = $conn->prepare("SELECT * FROM users left join roles on users.role_id = roles.customer_id where id = ?");
+    $stmt = $conn->prepare("SELECT * FROM users left join roles on users.role_id = roles.user_id where id = ?");
     $stmt->bind_param("i", $id);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -26,8 +26,8 @@ if (isset($_GET['id'])) {
             <div class="user-info">Address: <?php echo $user['address']; ?></div>
             <div class="user-info">Phone Number: <?php echo $user['phone']; ?></div>
             <div class="user-info">Role: <?php echo !empty($role_id) ? $user['role_name'] : 'None'; ?></div>
-            
-        
+
+
 
         </div>
 

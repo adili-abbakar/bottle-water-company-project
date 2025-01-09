@@ -14,7 +14,7 @@ if (!isset($_SESSION['username'])) {
     $username = $_SESSION['username'];
 
 
-    $stmt = $conn->prepare("SELECT * FROM users left join roles on users.role_id = customer_id WHERE username =? ");
+    $stmt = $conn->prepare("SELECT * FROM users left join roles on users.role_id = user_id WHERE username =? ");
     $stmt->bind_param("s", $username);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -23,7 +23,7 @@ if (!isset($_SESSION['username'])) {
 
 
     if (!empty($role_id)) {
-        $stmt = $conn->prepare("SELECT * FROM users JOIN roles on  users.role_id = roles.customer_id  WHERE username =? ");
+        $stmt = $conn->prepare("SELECT * FROM users JOIN roles on  users.role_id = roles.user_id  WHERE username =? ");
         $stmt->bind_param("s", $username);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -49,7 +49,12 @@ if (!isset($_SESSION['username'])) {
     <link rel="stylesheet" href="styles/new-item-form.css">
     <link rel="stylesheet" href="styles/profile.css">
     <link rel="stylesheet" href="styles/form.css">
-
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer" />
 
 
     <title>BWC Sales Record.</title>
@@ -71,7 +76,7 @@ if (!isset($_SESSION['username'])) {
                 <?php echo ($logged_in_user['role_name'] ===  "Admin" || $logged_in_user['role_name'] === "Inventory Manager") ? "<a href='products-management.php'>Products management</a> /" : null;  ?>
 
                 <?php echo ($logged_in_user['role_name'] ===  "Admin") ? "<a href='users-management.php'>Users management</a> /" : null;  ?>
-                
+
 
 
                 <?php if (isset($_SESSION['username'])): ?>
@@ -90,4 +95,3 @@ if (!isset($_SESSION['username'])) {
             </div>
         </div>
     </header>
-

@@ -26,7 +26,7 @@ if ($logged_in_user['role_name']  === "Admin") {
         $page = $_GET['page'];
 
 
-        $stmt = $conn->prepare("SELECT * FROM users join roles on users.role_id = roles.customer_id");
+        $stmt = $conn->prepare("SELECT * FROM users join roles on users.role_id = roles.user_id");
         $stmt->execute();
         $result = $stmt->get_result();
         $users = $result->fetch_all(MYSQLI_ASSOC);
@@ -241,7 +241,7 @@ if ($logged_in_user['role_name']  === "Admin") {
 
                                 <?php foreach ($roles as $role): ?>
 
-                                    <option value="<?php echo $role['customer_id']; ?>" <?php echo ($role_id == $role['customer_id']) ? 'selected' : ''; ?>>
+                                    <option value="<?php echo $role['user_id']; ?>" <?php echo ($role_id == $role['user_id']) ? 'selected' : ''; ?>>
                                         <?php echo $role['role_name']; ?>
                                     </option>
                                 <?php endforeach; ?>
