@@ -4,7 +4,7 @@ function validateInput($input, $field_name, $unique = false, $array = null)
 {
     $value = $error = '';
     if (!empty($input)) {
-        if ($field_name === "Email" || $field_name === "Customer Email" ) {
+        if ($field_name === "Email" || $field_name === "Customer Email") {
             $value = filter_var($input, FILTER_SANITIZE_EMAIL);
         } else {
             if ($field_name === "Phone Number" || $field_name === "Customer Contact Number") {
@@ -13,7 +13,7 @@ function validateInput($input, $field_name, $unique = false, $array = null)
                 } else {
                     $value = filter_var($input, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
                 }
-            }else{
+            } else {
                 $value = filter_var($input, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             }
         }
@@ -84,4 +84,38 @@ function array_value_sum($x, $y)
         $w += $z[$y];
     }
     return number_format($w, 2);
+}
+
+function obscureName($name)
+{
+    $length = strlen($name);
+
+    if ($length <= 2) {
+        return $name;
+    } else {
+        $first = $name[0];
+        $second = $name[1];
+        $second_to_last = $name[$length - 2];
+        $last = $name[$length - 1];
+        $middle = str_repeat('*', $length - 4);
+        return $first . $second . $middle . $second_to_last .  $last;
+    }
+}
+
+
+function obscureEmail($email)
+{
+    list($local, $domain) = explode('@', $email);
+    $domain = '@' . $domain;
+
+    $length = strlen($local);
+
+    if ($local <= 4) {
+        return $email;
+    } else {
+        $first = substr($local, 0, 2);
+        $last = substr($local, $length - 2);
+        $middle = str_repeat('*', $length - 4);
+        return $first . $middle . $last . $domain;
+    }
 }

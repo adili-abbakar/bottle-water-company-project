@@ -121,10 +121,7 @@ if (in_array($logged_in_user['role_name'], ["Admin", "Accountant", "Sale Agent"]
                 </th>
                 <th>
                     Amount Paid
-
                 </th>
-
-
             </tr>
 
 
@@ -132,7 +129,7 @@ if (in_array($logged_in_user['role_name'], ["Admin", "Accountant", "Sale Agent"]
                 <tr class="sale-row" data-id="<?php echo $sale['sale_id']; ?>">
                     <td><?php echo $sale['sale_id'];  ?></td>
                     <td><?php echo $sale['sold_on'];  ?></td>
-                    <td><?php echo $sale['customer_name'];  ?></td>
+                    <td><?php echo obscureName($sale['customer_name']);  ?></td>
                     <td><?php echo number_format($sale['payment_amount'], 2);  ?></td>
 
                 </tr>

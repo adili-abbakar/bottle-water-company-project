@@ -84,7 +84,7 @@ $products = $result->fetch_all(MYSQLI_ASSOC);
                 <tr class="sale-row" data-id="<?php echo $sale['sale_id']; ?>">
                     <td><?php echo $sale['sale_id'];  ?></td>
                     <td><?php echo $sale['sold_on'];  ?></td>
-                    <td><?php echo $sale['customer_name'];  ?></td>
+                    <td><?php echo obscureName($sale['customer_name']);  ?></td>
                     <td><?php echo number_format($sale['payment_amount'], 2);  ?></td>
 
                 </tr>

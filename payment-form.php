@@ -2,54 +2,60 @@
 include "includes/header.php";
 if ($logged_in_user['role_name'] ===  "Admin" || $logged_in_user['role_name'] === "Sale Agent") {
 
-$product_id = $_SESSION['product_id'];
-$product_quantity =  $_SESSION['product_quantity'];
-$customer_name = $_SESSION['customer_name'];
-$customer_address = $_SESSION['customer_address'];
-$customer_phone = $_SESSION['customer_contact_number'];
-$customer_email = $_SESSION['customer_email']; $customer_email = empty($customer_email) ? null : $customer_email;
-$total_price =  $_SESSION['total_price'];
-$unit_price = $_SESSION['unit_price'];
-$seller_id = $logged_in_user['id'];
+    $product_id = $_SESSION['product_id'];
+    $product_quantity =  $_SESSION['product_quantity'];
+    $customer_name = $_SESSION['customer_name'];
+    $customer_address = $_SESSION['customer_address'];
+    $customer_phone = $_SESSION['customer_contact_number'];
+    $customer_email = $_SESSION['customer_email'];
+    $customer_email = empty($customer_email) ? null : $customer_email;
+    $total_price =  $_SESSION['total_price'];
+    $unit_price = $_SESSION['unit_price'];
+    $seller_id = $logged_in_user['id'];
+
+    $stmt = $conn->prepare("SELECT * FROM products WHERE product_id=?");
+    $stmt->bind_param("i", $product_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $product = $result->fetch_assoc();
+    $payment_amount = ($product['wrap_pack_price'] * $product_quantity);
+
+    $product_price_at_sale_time =  sprintf("%.2f", ($product['wrap_pack_price']));
 
 
-$stmt = $conn->prepare("SELECT * FROM products WHERE product_id=?");
-$stmt->bind_param("i", $product_id);
-$stmt->execute();
-$result = $stmt->get_result();
-$product = $result->fetch_assoc();
-$payment_amount = ($product['wrap_pack_price'] * $product_quantity);
 
-$product_price_at_sale_time =  sprintf("%.2f", ($product['wrap_pack_price']));
+    if (isset($_POST['submit'])) {
 
 
-
-if (isset($_POST['submit'])) {
-
-
-    $payment_method = filter_input(INPUT_POST, 'payment_method', FILTER_SANITIZE_SPECIAL_CHARS);
+        $payment_method = filter_input(INPUT_POST, 'payment_method', FILTER_SANITIZE_SPECIAL_CHARS);
 
 
-    $stmt = $conn->prepare("INSERT INTO sales (customer_name, customer_email , customer_address, customer_phone, product_id ,product_quantity, product_price_at_sale_time, seller_id, payment_amount, payment_method) VALUES (?,?,?,?,?,?,?,?,?,?) ");
+        $stmt = $conn->prepare("INSERT INTO sales (customer_name, customer_email , customer_address, customer_phone, product_id ,product_quantity, product_price_at_sale_time, seller_id, payment_amount, payment_method) VALUES (?,?,?,?,?,?,?,?,?,?) ");
 
-    if($stmt){
+        if ($stmt) {
 
-        
-        
-        $stmt->bind_param("ssssiidids",$customer_name, $customer_email , $customer_address, $customer_phone, $product_id ,$product_quantity, $product_price_at_sale_time, $seller_id, $payment_amount, $payment_method );
 
-        if($stmt->execute()){
-            header(("Location: all-sales-record.php"));
-        }else{
-            echo "Error " . $stmt->error;
+
+            $stmt->bind_param("ssssiidids", $customer_name, $customer_email, $customer_address, $customer_phone, $product_id, $product_quantity, $product_price_at_sale_time, $seller_id, $payment_amount, $payment_method);
+
+
+            if ($stmt->execute()) {
+                $sale_id = $conn->insert_id;
+                $stmt = $conn->prepare("INSERT INTO reciepts (generated_date) values (DEFAULT)");
+                $stmt->execute();
+                $reciept_id = $conn->insert_id;
+                $stmt = $conn->prepare("UPDATE sales set  reciept_id = ? where sale_id = ?");
+                $stmt->bind_param('ii', $reciept_id, $sale_id);
+                $stmt->execute();
+                header(("Location: reciept.php?sale_id=$sale_id"));
+            } else {
+                echo "Error " . $stmt->error;
+            }   
+        } else {
+            echo "ERROR PREPARING STATEMENT " . $conn->error;
         }
-    }else{
-        echo "ERROR PREPARING STATEMENT " . $conn->error;
     }
-
-}
-
-}else{
+} else {
     header("Location: restriction-page.php");
 }
 

@@ -1,6 +1,6 @@
 <?php include "includes/header.php";
 
-if ($logged_in_user['role_name'] ===  "Admin" || $logged_in_user['role_name'] === "Accountant" || $logged_in_user['role_name'] ===  "Sale Agent")  {
+if ($logged_in_user['role_name'] ===  "Admin" || $logged_in_user['role_name'] === "Accountant" || $logged_in_user['role_name'] ===  "Sale Agent") {
     if (isset($_SESSION['id'])) {
 
         $id = $_SESSION['id'];
@@ -155,6 +155,12 @@ if ($logged_in_user['role_name'] ===  "Admin" || $logged_in_user['role_name'] ==
                 <?php echo $sale['sold_on']; ?>
 
 
+            </div>
+
+            <div>
+                <a href="reciept.php?sale_id=<?php echo $sale['sale_id'] ;?>">
+                    <button class="btn">Open Reciept</button>
+                </a>
             </div>
 
         </div>
