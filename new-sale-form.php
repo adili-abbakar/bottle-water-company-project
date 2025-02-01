@@ -13,9 +13,6 @@ if ($logged_in_user['role_name'] ===  "Admin" || $logged_in_user['role_name'] ==
     $product_ids = $result->fetch_all(MYSQLI_ASSOC);
 
     if (isset($_POST['submit'])) {
-
-
-
         $product_id_validation = validateInput($_POST['product_id'], "Product");
         $product_id = $product_id_validation['value'];
         $product_idErr = $product_id_validation['error'];

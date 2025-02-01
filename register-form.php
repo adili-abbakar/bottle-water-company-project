@@ -43,7 +43,7 @@ if (isset($_POST['submit'])) {
     $password1 = $password_validation['value'];
     $password1Err = $password_validation['error'];
 
-  
+
 
     $address_validation = validateInput($_POST['address'], "Address");
     $address = $address_validation['value'];
@@ -72,7 +72,7 @@ if (isset($_POST['submit'])) {
 
 
 
- 
+
     if (!empty($name) &&  !empty($username) &&  !empty($email) &&  !empty($address) &&  !empty($phone) &&  !empty($password)) {
 
 
@@ -105,8 +105,8 @@ if (isset($_POST['submit'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles/main.css">
-    <link rel="stylesheet" href="styles/form.css">
+    <link rel="stylesheet" href="static/styles/main.css">
+    <link rel="stylesheet" href="static/styles/form.css">
 
     <title>BWC Login.</title>
 </head>

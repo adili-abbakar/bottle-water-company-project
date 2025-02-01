@@ -158,7 +158,7 @@ if ($logged_in_user['role_name'] ===  "Admin" || $logged_in_user['role_name'] ==
             </div>
 
             <div>
-                <a href="reciept.php?sale_id=<?php echo $sale['sale_id'] ;?>">
+                <a href="reciept.php?sale_id=<?php echo $sale['sale_id'] ;?>&page=sale_details">
                     <button class="btn">Open Reciept</button>
                 </a>
             </div>

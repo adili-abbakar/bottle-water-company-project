@@ -1,6 +1,6 @@
-<?php 
-include('config/database.php'); 
-include('includes/functions.php'); 
+<?php
+include('config/database.php');
+include('includes/functions.php');
 
 
 session_start();
@@ -14,11 +14,11 @@ $emailErr = $passwordErr = '';
 
 
 if (isset($_POST['submit'])) {
-    $email_validation = validateInput($_POST['email'], "Email"); 
+    $email_validation = validateInput($_POST['email'], "Email");
     $email = $email_validation['value'];
     $emailErr = $email_validation['error'];
 
-    $password_validation = validateInput($_POST['password'], "Password"); 
+    $password_validation = validateInput($_POST['password'], "Password");
     $password = $password_validation['value'];
     $passwordErr = $password_validation['error'];
 
@@ -31,16 +31,14 @@ if (isset($_POST['submit'])) {
         $result = $stmt->get_result();
         $user = $result->fetch_assoc();
 
-        if($user && password_verify($password, $user['password'])){
+        if ($user && password_verify($password, $user['password'])) {
             session_regenerate_id(true);
             $_SESSION['username'] = $user['username'];
             header('Location: index.php');
-            exit(); 
-        }else{
+            exit();
+        } else {
             $incorrect_msg = "Incorrect email or password";
         }
-
-
     }
 }
 
@@ -53,8 +51,8 @@ if (isset($_POST['submit'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles/main.css">
-    <link rel="stylesheet" href="styles/form.css">
+    <link rel="stylesheet" href="static/styles/main.css">
+    <link rel="stylesheet" href="static/styles/form.css">
 
     <title>BWC Login.</title>
 </head>

@@ -47,7 +47,7 @@ if ($logged_in_user['role_name'] ===  "Admin" || $logged_in_user['role_name'] ==
                 $stmt = $conn->prepare("UPDATE sales set  reciept_id = ? where sale_id = ?");
                 $stmt->bind_param('ii', $reciept_id, $sale_id);
                 $stmt->execute();
-                header(("Location: reciept.php?sale_id=$sale_id"));
+                header(("Location: reciept.php?sale_id=$sale_id&page=payment_form"));
             } else {
                 echo "Error " . $stmt->error;
             }   

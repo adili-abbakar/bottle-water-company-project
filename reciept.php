@@ -19,7 +19,7 @@ if ($_GET['sale_id']) {
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="styles/reciept.css">
+  <link rel="stylesheet" href="./static/styles/reciept.css">
   <title>BWC sale reciept</title>
 
 </head>
@@ -38,7 +38,7 @@ if ($_GET['sale_id']) {
           </p>
           <div class="reciept-body-top-inner-ctn">
             <div>Name: <?php echo obscureName($sale['customer_name']) ?></div>
-            <div>email: <?php echo obscureEmail($sale['customer_email']) ?></div>
+            <div>email: <?php echo $sale['customer_email'] ? obscureEmail($sale['customer_email']): '' ;  ?></div>
             <div>phone: <?php echo obscureName($sale['customer_phone']) ?></div>
             <div>Address: Kofar Marke, area</div>
           </div>
@@ -84,7 +84,9 @@ if ($_GET['sale_id']) {
   </div>
 
   <div class="reciept-page-navigation-btns-ctn">
+    <?php if($_GET['page'] !== 'payment_form'): ?>
     <button class="btn" onclick="window.history.back()">Back</button>
+    <?php endif; ?>
     <a href="./all-sales-record.php"><button class="btn">Sales Record</button></a>
 
   </div>

@@ -9,8 +9,7 @@
   --color-detail: rgb(76, 76, 255);
 }
 
-
-body{
+body {
   padding-top: 50px;
   padding-bottom: 75px;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
@@ -406,6 +405,13 @@ tr:hover button {
   opacity: 1;
 }
 
+.btn-ctn {
+  display: flex;
+  padding: 3px;
+  align-items: center;
+  justify-content: center;
+}
+
 .error-message {
   color: var(--error-color);
   text-align: center;
@@ -557,16 +563,16 @@ footer {
   text-align: center;
 }
 
-.second-table-body-head{
+.second-table-body-head {
   width: 250px;
 }
 
-.dashboard-navigation-links{
+.dashboard-navigation-links {
   margin-top: 5px;
   margin-bottom: 10px;
 }
 
-.searcb-bar-cancel-btn-ctn{
+.searcb-bar-cancel-btn-ctn {
   display: flex;
   /* width: 100%; */
   padding: 10px;
@@ -574,23 +580,72 @@ footer {
   margin: 0 2px;
 }
 
-.search-result-title{
+.search-result-title {
   width: 100%;
   text-align: center;
   font-size: 110%;
   font-weight: bold;
 }
 
-.searcb-bar-cancel-btn{
+.searcb-bar-cancel-btn {
   height: min-content;
   background-color: var(--error-color);
-  border:  none;padding: 5px 10px;
+  border: none;
+  padding: 5px 10px;
   border-radius: 5px;
   font-weight: bold;
   cursor: pointer;
 }
 
-.searcb-bar-cancel-btn:hover{
+.searcb-bar-cancel-btn:hover {
   background-color: red;
   transition: 0.2s;
 }
+
+.year-periodic-sale-ctn {
+  padding: 5px;
+  border-radius: 5px;
+  margin-bottom: 5px;
+  background-color: var(--primary-color);
+}
+
+.month-periodic-sale-ctn {
+  padding: 5px;
+  border-radius: 5px;
+  margin-bottom: 5px;
+  background-color: var(--mid-color);
+}
+.day-periodic-sale-ctn{
+  padding: 5px;
+  border-radius: 3px;
+  background-color: var(--secondary-color);
+}
+
+.day-periodic-sale-inner-ctn,
+.month-periodic-sale-inner-ctn,
+.year-periodic-sale-inner-ctn {
+  display: flex;
+  padding: 10px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.year-periodic-sale-inner-ctn{
+  font-size: 110%;
+  font-weight:bold;
+}
+
+.month-periodic-sale-inner-ctn{
+  font-weight:bold;
+}
+
+.periodic-total-sales-ctn{
+  background-color: var(--mid-color);
+  padding: 10px;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-bottom: 20px;
+}
+

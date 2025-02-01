@@ -51,9 +51,9 @@ if (in_array($logged_in_user['role_name'], ["Admin", "Accountant", "Sale Agent"]
     </div>
 
     <div class="dashboard-navigation-links">
-        <a href="periodic-sale-total.php">
+        <a href="general-sales-total.php">
             <button class="btn">
-                Periodic Sales
+                General Sales Total
             </button>
         </a>
 
