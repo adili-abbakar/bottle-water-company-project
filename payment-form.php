@@ -51,7 +51,6 @@ if ($logged_in_user['role_name'] ===  "Admin" || $logged_in_user['role_name'] ==
 
 
         if ($stmt) {
-            // $payment_amount = number_format($payment_amount, 2);
             $payment_method = (int) $payment_method;
             $sale_id = (int) $sale_id;
             $completed = 1;
