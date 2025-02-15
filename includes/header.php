@@ -39,7 +39,7 @@ include 'user-auth.php';
                 <?php echo ($logged_in_user['role_name'] ===  "Admin" || $logged_in_user['role_name'] === "Sale Agent") ? "<a href='new-sale-form.php'>New Sale</a> /" : null;  ?>
                 <?php echo ($logged_in_user['role_name'] ===  "Admin" || $logged_in_user['role_name'] === "Inventory Manager") ? "<a href='products-management.php'>Products management</a> /" : null;  ?>
 
-                <?php echo ($logged_in_user['role_name'] ===  "Admin") ? "<a href='users-management.php'>Users management</a> /" : null;  ?>
+                <?php echo ($logged_in_user['role_name'] ===  "Admin") ? "<a href='users-management.php'>Users management</a> / <a href='general-settings.php'>General Settings</a> /" : null;  ?>
 
 
 

@@ -280,8 +280,8 @@ tr:hover button {
 }
 
 .new-sale-form-ctn {
-  background-color: var(--secondary-color);
-  padding: 10px;
+  /* background-color: var(--secondary-color); */
+
   border-radius: 5px;
 }
 
@@ -291,10 +291,27 @@ tr:hover button {
   justify-content: center;
   gap: 20px;
   flex-direction: column;
+  background-color: var(--secondary-color);
+  padding: 10px;
 }
+
+.new-sale-form-products-ctn{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  align-items: center;
+  justify-content: center;
+  border: 1px lightgray solid;
+  border-radius: 5px;
+}
+
 
 .new-sale-form {
   width: inherit;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .new-sale-form-inputs-main-ctn {
@@ -309,6 +326,11 @@ tr:hover button {
   .new-sale-form-inputs-main-ctn {
     display: grid;
     grid-template-columns: 1fr;
+  }
+
+  .new-sale-form-products-fields{
+    display: grid;
+    grid-template-columns: 1fr 1fr !important;
   }
 }
 
@@ -500,7 +522,7 @@ tr:hover button {
   height: fit-content;
   padding: 10px;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 2fr 1fr;
   gap: 10px;
 }
 
@@ -525,6 +547,9 @@ tr:hover button {
   border: 1px gray solid;
   padding: 5px;
   border-radius: 5px;
+  margin-bottom: 5px;
+  margin-top: 5px;
+
 }
 
 .sale-details-gen-info-ctn-title {
@@ -615,7 +640,7 @@ footer {
   margin-bottom: 5px;
   background-color: var(--mid-color);
 }
-.day-periodic-sale-ctn{
+.day-periodic-sale-ctn {
   padding: 5px;
   border-radius: 3px;
   background-color: var(--secondary-color);
@@ -630,16 +655,16 @@ footer {
   justify-content: space-between;
 }
 
-.year-periodic-sale-inner-ctn{
+.year-periodic-sale-inner-ctn {
   font-size: 110%;
-  font-weight:bold;
+  font-weight: bold;
 }
 
-.month-periodic-sale-inner-ctn{
-  font-weight:bold;
+.month-periodic-sale-inner-ctn {
+  font-weight: bold;
 }
 
-.periodic-total-sales-ctn{
+.periodic-total-sales-ctn {
   background-color: var(--mid-color);
   padding: 10px;
   border-radius: 5px;
@@ -649,3 +674,9 @@ footer {
   margin-bottom: 20px;
 }
 
+.general-setting-head-ctn{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 3px;
+}

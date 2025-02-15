@@ -19,13 +19,13 @@ $users = $result->fetch_all(MYSQLI_ASSOC);
 if (isset($_GET['id'])) {
     $user_id =  $_GET['id'];
     
-    $stmt = $conn->prepare("SELECT * FROM users WHERE id=?");
+    $stmt = $conn->prepare("SELECT * FROM users WHERE user_id=?");
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
     $result = $stmt->get_result();
     $user_to_update = $result->fetch_assoc();
 
-    $id = $user_to_update['id'];
+    $id = $user_to_update['user_id'];
     $current_password = $user_to_update['password'];
 }
 
@@ -49,7 +49,7 @@ if (isset($_POST['submit'])) {
 
 
     if (!empty($password)) {
-        $stmt =  $conn->prepare("UPDATE users SET password = ? WHERE id=?");
+        $stmt =  $conn->prepare("UPDATE users SET password = ? WHERE user_id=?");
 
         if ($stmt) {
             $stmt->bind_param('si', $password, $id);

@@ -8,3 +8,9 @@ tableRow.forEach((row) => {
     window.location.href = url;
   });
 });
+
+function addProduct() {
+  let formCtn = document.querySelector(".new-sale-form-products-ctn");
+  let formFields = document.querySelector(".new-sale-form-products-fields").cloneNode(true);
+  formCtn.appendChild(formFields);
+}

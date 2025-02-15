@@ -8,8 +8,8 @@ if (in_array($logged_in_user['role_name'], ["Admin", "Accountant", "Sale Agent"]
 
 
     if ($search_query) {
-        $stmt = $conn->prepare("SELECT * FROM sales left join users on sales.seller_id = users.id left join products on sales.sale_id = products.product_id  where sale_id Like ? or sale_id like ? or customer_email like ? or customer_name like ? or customer_address like ? or customer_phone like ? or payment_amount like ? or payment_method like ? or product_name like ? or  name like ? or DATE_FORMAT(sold_on, '%d-%m-%y') LIKE ?  ORDER BY sale_id DESC");
-        $stmt->bind_param('sssssssssss', $search_query, $search_query, $search_query, $search_query, $search_query, $search_query, $search_query, $search_query, $search_query, $search_query, $search_query);
+        $stmt = $conn->prepare("SELECT * FROM sales left join users on sales.seller_id = users.user_id left join payment_methods on payment_methods.method_id = sales.method_id  where sale_id Like ? or sale_id like ? or customer_email like ? or customer_name like ? or customer_address like ? or customer_phone like ? or payment_amount like ? or method_name like ? or  name like ? or DATE_FORMAT(sold_on, '%d-%m-%y') LIKE ?  ORDER BY sale_id DESC");
+        $stmt->bind_param('ssssssssss', $search_query, $search_query, $search_query, $search_query, $search_query, $search_query, $search_query,  $search_query, $search_query, $search_query);
     } else {
         $stmt = $conn->prepare("SELECT * FROM sales  ORDER BY sale_id DESC");
     }

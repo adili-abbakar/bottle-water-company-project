@@ -8,8 +8,8 @@ function validateInput($input, $field_name, $unique = false, $array = null)
             $value = filter_var($input, FILTER_SANITIZE_EMAIL);
         } else {
             if ($field_name === "Phone Number" || $field_name === "Customer Contact Number") {
-                if (strlen($input) > 12) {
-                    $error = $field_name . " must not exceed 12 numbers";
+                if (strlen($input) > 15) {
+                    $error = $field_name . " must not exceed 15 characters";
                 } else {
                     $value = filter_var($input, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
                 }

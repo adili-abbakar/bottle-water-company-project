@@ -5,7 +5,7 @@ if (isset($_GET['id'])) {
     $id = $_GET['id'];
 
 
-    $stmt = $conn->prepare("SELECT * FROM users left join roles on users.role_id = roles.user_id where id = ?");
+    $stmt = $conn->prepare("SELECT * FROM users left join roles on users.role_id = roles.role_id where user_id = ?");
     $stmt->bind_param("i", $id);
     $stmt->execute();
     $result = $stmt->get_result();

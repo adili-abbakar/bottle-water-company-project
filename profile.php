@@ -19,8 +19,8 @@
 
 
         <div class="btn-ctn profile-btns-ctn">
-            <a href="/bottle_water_company_project/user-create-update-form.php?id=<?php echo $logged_in_user['id']; ?> &page=profile&action=update"><button class="btn">Update Profile</button></a>
-            <a href="/bottle_water_company_project/update-password-validation.php?id=<?php echo $logged_in_user['id']; ?>"> <button class="btn">Change Password</button></a>
+            <a href="/bottle_water_company_project/user-create-update-form.php?id=<?php echo $logged_in_user['user_id']; ?> &page=profile&action=update"><button class="btn">Update Profile</button></a>
+            <a href="/bottle_water_company_project/update-password-validation.php?id=<?php echo $logged_in_user['user_id']; ?>"> <button class="btn">Change Password</button></a>
 
 
         </div>

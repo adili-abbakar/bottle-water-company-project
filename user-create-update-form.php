@@ -2,7 +2,7 @@
 
 include('includes/header.php');
 
-if ($logged_in_user['role_name']  === "Admin") {
+if ($logged_in_user['role_name']  === "Admin" || $_GET['page'] === 'profile') {
 
     $id = $name = $username =  $email = $phone = $address = $password1 = $password2 = $role_id = '';
     $nameErr = $usernameErr =  $emailErr  = $phoneErr = $addressErr = $password1Err = $password2Err = $role_idErr = '';
@@ -19,7 +19,7 @@ if ($logged_in_user['role_name']  === "Admin") {
         $page = $_GET['page'];
 
 
-        $stmt = $conn->prepare("SELECT * FROM users join roles on users.role_id = roles.user_id");
+        $stmt = $conn->prepare("SELECT * FROM users join roles on users.role_id = roles.role_id");
         $stmt->execute();
         $result = $stmt->get_result();
         $users = $result->fetch_all(MYSQLI_ASSOC);
@@ -29,7 +29,7 @@ if ($logged_in_user['role_name']  === "Admin") {
 
         if (isset($_GET['id'])) {
             $user_id =  $_GET['id'];
-            $stmt = $conn->prepare("SELECT * FROM users WHERE id=?");
+            $stmt = $conn->prepare("SELECT * FROM users WHERE user_id=?");
             $stmt->bind_param('i', $user_id);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -44,7 +44,7 @@ if ($logged_in_user['role_name']  === "Admin") {
 
 
 
-            $id = $user_to_update['id'];
+            $id = $user_to_update['user_id'];
             $name = $user_to_update['name'];
             $username = $user_to_update['username'];
             $email = $user_to_update['email'];
@@ -67,20 +67,22 @@ if ($logged_in_user['role_name']  === "Admin") {
             $phone = $phone_valdation['value'];
             $phoneErr = $phone_valdation['error'];
 
-            $role_id_valdation = validateInput(($_POST['role_id']), "Role");
-            $role_id = $role_id_valdation['value'];
-            $role_idErr = $role_id_valdation['error'];
+
+            if ($_GET['page'] !== 'profile') {
+
+                $role_id_valdation = validateInput(($_POST['role_id']), "Role");
+                $role_id = $role_id_valdation['value'];
+                $role_idErr = $role_id_valdation['error'];
 
 
+                $password1_valdation = validatePassword(($_POST['password1']), "Password");
+                $password1 = $password1_valdation['value'];
+                $password1Err = $password1_valdation['error'];
 
-            $password1_valdation = validatePassword(($_POST['password1']), "Password");
-            $password1 = $password1_valdation['value'];
-            $password1Err = $password1_valdation['error'];
-
-            $password2_valdation = validatePassword(($_POST['password2']), "Password Confirmatino");
-            $password2 = $password2_valdation['value'];
-            $password2Err = $password2_valdation['error'];
-
+                $password2_valdation = validatePassword(($_POST['password2']), "Password Confirmatino");
+                $password2 = $password2_valdation['value'];
+                $password2Err = $password2_valdation['error'];
+            }
             if ($action === "update") {
 
                 $username_valdation = validateInput(($_POST['username']), "Username");
@@ -94,7 +96,7 @@ if ($logged_in_user['role_name']  === "Admin") {
                 if (empty($nameErr) && empty($usernameErr) && empty($emailErr) && empty($addressErr) && empty($phoneErr) && empty($role_idErr)) {
 
 
-                    $stmt = $conn->prepare("UPDATE users SET name = ?, email=?, username=?, address=?, phone=?, role_id=? WHERE id=? ");
+                    $stmt = $conn->prepare("UPDATE users SET name = ?, email=?, username=?, address=?, phone=?, role_id=? WHERE user_id=? ");
 
                     if ($stmt) {
                         $stmt->bind_param("sssssii", $name, $email, $username, $address, $phone, $role_id, $id);
@@ -141,7 +143,7 @@ if ($logged_in_user['role_name']  === "Admin") {
 
                     if ($stmt) {
                         $stmt->bind_param('sssssis', $name, $username,  $email, $phone, $address, $role_id, $hashed_password);
-
+                      
                         if ($stmt->execute()) {
                             if ($page === 'users-management') {
                                 header('Location: users-management.php');
@@ -234,7 +236,7 @@ if ($logged_in_user['role_name']  === "Admin") {
 
                                 <?php foreach ($roles as $role): ?>
 
-                                    <option value="<?php echo $role['user_id']; ?>" <?php echo ($role_id == $role['user_id']) ? 'selected' : ''; ?>>
+                                    <option value="<?php echo $role['role_id']; ?>" <?php echo ($role_id == $role['role_id']) ? 'selected' : ''; ?>>
                                         <?php echo $role['role_name']; ?>
                                     </option>
                                 <?php endforeach; ?>

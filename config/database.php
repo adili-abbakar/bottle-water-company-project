@@ -2,7 +2,10 @@
 define('DB_HOST', 'localhost');
 define('DB_USER', 'adeelee');
 define('DB_PASS', 'Aa22822527#');
-define('DB_NAME', 'bottle_water_company_database');
+// define('DB_NAME', 'bottle_water_company_database');
+define('DB_NAME', 'bottle_water_company');
+
+
 
 
 

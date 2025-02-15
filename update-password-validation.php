@@ -7,7 +7,7 @@ $password = $passwordErr = '';
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
 
-    $stmt = $conn->prepare("SELECT * FROM users WHERE id=?");
+    $stmt = $conn->prepare("SELECT * FROM users WHERE user_id=?");
     $stmt->bind_param('i', $id);
     $stmt->execute();
     $result = $stmt->get_result();
