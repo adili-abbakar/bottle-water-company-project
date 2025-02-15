@@ -3,37 +3,34 @@ include('config/database.php');
 include('includes/functions.php');
 
 
-
 session_start();
-
 
 if (isset($_SESSION['username'])) {
     header('Location: index.php');
+    exit();
 }
 
-$name = $username =  $email = $password1 = $password2 = $phone = $address = '';
-$nameErr = $usernameErr =  $emailErr = $password1Err = $password2Err = $phoneErr = $addressErr =  '';
+$name = $username = $email = $password1 = $password2 = $phone = $address = '';
+$nameErr = $usernameErr = $emailErr = $password1Err = $password2Err = $phoneErr = $addressErr = '';
 
+$stmt = $conn->prepare("SELECT COUNT(*), username, email as user_count FROM users");
+$stmt->execute();
+$result = $stmt->get_result();
+$row = $result->fetch_assoc();
+$user_count = $row['user_count'];
 
 $stmt = $conn->prepare("SELECT * FROM users");
 $stmt->execute();
-$result = $stmt->get_result();
-$users = $result->fetch_all(MYSQLI_ASSOC);
-
+$users = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 
 if (isset($_POST['submit'])) {
-
-
-
     $name_validation = validateInput($_POST['name'], "Name");
     $name = $name_validation['value'];
     $nameErr = $name_validation['error'];
 
-
     $username_validation = validateInput($_POST['username'], "Username", true, $users);
     $username = $username_validation['value'];
     $usernameErr = $username_validation['error'];
-
 
     $email_validation = validateInput($_POST['email'], "Email", true, $users);
     $email = $email_validation['value'];
@@ -43,51 +40,56 @@ if (isset($_POST['submit'])) {
     $password1 = $password_validation['value'];
     $password1Err = $password_validation['error'];
 
+    $password_validation = validatePassword($_POST['password2'], "Password Confirmation");
+    $password2 = $password_validation['value'];
+    $password2Err = $password_validation['error'];
 
+    if (!empty($password1) && !empty($password2)) {
+        $password_comparison = comparePassword($password1, 'Password', $password2, 'Password confirmation');
+        $password = $password_comparison['value'];
+        $password2Err = $password_comparison['error'];
+    }
 
     $address_validation = validateInput($_POST['address'], "Address");
     $address = $address_validation['value'];
     $addressErr = $address_validation['error'];
 
-
     $phone_validation = validateInput($_POST['phone'], "Phone Number");
     $phone = $phone_validation['value'];
     $phoneErr = $phone_validation['error'];
 
+    if (!empty($name) && !empty($username) && !empty($email) && !empty($address) && !empty($phone) && !empty($password)) {
 
-    $password_validation = validatePassword($_POST['password1'], "Password");
-    $password1 = $password_validation['value'];
-    $password1Err = $password_validation['error'];
+        // If no users exist, assign role_id for Admin
+        $role_id = NULL;
+        if ($user_count == 0) {
+            // Check if 'Admin' role exists
+            $stmt = $conn->prepare("SELECT role_id FROM roles WHERE role_name = 'Admin'");
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $role = $result->fetch_assoc();
 
+            if ($role) {
+                $role_id = $role['role_id'];
+            } else {
+                // Create 'Admin' role
+                $stmt = $conn->prepare("INSERT INTO roles (name) VALUES ('Admin')");
+                $stmt->execute();
+                $role_id = $stmt->insert_id; // Get the newly created role ID
+            }
+        }
 
-    $password_validation = validatePassword($_POST['password2'], "Password Confirmation");
-    $password2 = $password_validation['value'];
-    $password2Err = $password_validation['error'];
-
-    if (!empty($password1)  && !empty($password2)) {
-        $password_coparison = comparePassword($password1, 'Password', $password2, 'Password confirmation');
-        $password = $password_coparison['value'];
-        $password2Err = $password_coparison['error'];
-    }
-
-
-
-
-    if (!empty($name) &&  !empty($username) &&  !empty($email) &&  !empty($address) &&  !empty($phone) &&  !empty($password)) {
-
-
-        $stmt =  $conn->prepare("INSERT INTO users (name, username, email, address, phone, password) VALUES (?,?,?,?,?,?)");
+        $stmt = $conn->prepare("INSERT INTO users (name, username, email, address, phone, password, role_id) VALUES (?,?,?,?,?,?,?)");
 
         if ($stmt) {
-            $stmt->bind_param("ssssss", $name, $username, $email, $address, $phone, $password);
-
+            $stmt->bind_param("ssssssi", $name, $username, $email, $address, $phone, $password, $role_id);
 
             if ($stmt->execute()) {
                 $_SESSION['username'] = $username;
                 header('Location: index.php');
                 exit();
             } else {
-                echo "Error" . $stmt->error;
+                echo "Error: " . $stmt->error;
             }
 
             $stmt->close();
@@ -96,8 +98,8 @@ if (isset($_POST['submit'])) {
         }
     }
 }
-
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
